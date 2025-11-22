@@ -1,0 +1,15 @@
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/bin/Debug/net9.0/Domain.deps.json
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/bin/Debug/net9.0/Domain.runtimeconfig.json
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/bin/Debug/net9.0/Domain.dll
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/bin/Debug/net9.0/Domain.pdb
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.csproj.AssemblyReference.cache
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.AssemblyInfoInputs.cache
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.AssemblyInfo.cs
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.csproj.CoreCompileInputs.cache
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.dll
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/refint/Domain.dll
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.pdb
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.genruntimeconfig.cache
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/ref/Domain.dll
+/Users/utereskovygmail.com/RiderProjects/WebApiTransfer/Domain/obj/Debug/net9.0/Domain.sourcelink.json
