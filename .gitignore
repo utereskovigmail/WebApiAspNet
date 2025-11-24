@@ -1,0 +1,89 @@
+############################
+# ASP.NET Core / .NET
+############################
+
+# Build results
+bin/
+obj/
+out/
+
+# Publish output
+*.pub
+*.publish/
+App_Data/
+
+# Logs
+*.log
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.nvuser
+*.rsuser
+
+# Visual Studio cache/options directory
+.vs/
+
+# Rider
+.idea/
+
+# ASP.NET secret settings
+secrets.json
+
+# Environment variables
+*.env
+*.env.local
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+
+############################
+# React / Node.js frontend
+############################
+
+# Node modules
+node_modules/
+
+# Production build
+build/
+dist/
+
+# Dependency directories
+bower_components/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories
+.cache/
+.eslintcache
+.vscode/
+
+# Misc
+.DS_Store
+Thumbs.db
+
+
+############################
+# OS-specific
+############################
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
+
+############################
+# Optional if using Docker
+############################
+docker-compose.override.yml
+*.dockerignore
