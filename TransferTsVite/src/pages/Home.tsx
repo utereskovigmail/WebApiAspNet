@@ -4,10 +4,11 @@ import axios from "axios";
 import type {Country} from "../Interfaces/Country.ts";
 import {useState} from "react";
 import Modal from "../Modals/Country"
+import APP_ENV from "../env";
 
 const Home = () =>{
-    const api = "http://localhost:5055/api";
-    const url = "http://localhost:5055";
+    const api = APP_ENV.API_BASE_URL + "/api";
+    // const url = "http://localhost:5055";
     const [selected, setSelected] = useState<Country | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -38,13 +39,13 @@ const Home = () =>{
     return (
         <div className={"w-full p-4 flex flex-row flex-wrap gap-4 justify-center"}>
             {
-                data.map((item, index:number) => (
+                data?.map((item, index:number) => (
                     <div
                         key={index}
                         className="max-w-sm bg-white rounded-xl shadow-md overflow-hidden border border-gray-200"
                     >
                         <img
-                            src={`${url}/images/${item.image}`}
+                            src={`${APP_ENV.API_BASE_URL}/images/${item.image}`}
                             alt={item.name}
                             className="w-full h-48 object-cover"
                         />

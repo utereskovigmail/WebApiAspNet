@@ -1,6 +1,8 @@
-﻿using Core.Interfaces;
+﻿using AutoMapper;
+using Core.Interfaces;
 using Core.Models.Location;
 using Domain;
+using Domain.Entities.Location;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApiTransfer.Controllers;
@@ -9,7 +11,8 @@ namespace WebApiTransfer.Controllers;
 [ApiController]
 public class CountriesController(
     AppDbTransferContext context,
-    ICountryService countryService
+    ICountryService countryService,
+    IMapper mapper, IImageService imageService
     ) : ControllerBase
 {
     [HttpGet]
@@ -24,7 +27,24 @@ public class CountriesController(
         var item = await countryService.CreateAsync(model);
 
         return CreatedAtAction(null, item);
-        //return Created(item); //код 201
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        if (await countryService.DeleteAsync(id)) return Ok();
+        else{return NotFound();}
+
+    }
+    [HttpPost]
+    public async Task<IActionResult> EditAsync([FromForm] CountryEditModel model)
+    {
+        var res = await countryService.EditAsync(model);
+        if (res) return Ok();
+        else
+        {
+            return NotFound();
+        }
     }
     
     

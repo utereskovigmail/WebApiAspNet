@@ -18,7 +18,8 @@ public class CountryEntity : BaseEntity<int>
     public string ShortDescription { get; set; } = null!;
     
     public List<string> Tags { get; set; } = new List<string>();
-    public string? Image { get; set; } 
+    public string? Image { get; set; }
     
-    
+
+
 }

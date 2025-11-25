@@ -3,6 +3,8 @@ using Core.Interfaces;
 using Core.Models.Location;
 using Domain;
 using Domain.Entities.Location;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services;
@@ -29,4 +31,42 @@ public class CountryService(IMapper mapper,
         var item = mapper.Map<CountryItemModel>(entity);
         return item;
     }
+    
+    public async Task<bool> EditAsync(CountryEditModel model)
+    {
+        var existingEntity = await context.Countries.FindAsync(model.Id);
+
+        if (existingEntity == null)
+            return false;
+        
+        mapper.Map(model, existingEntity);
+        
+        existingEntity.IsDeleted = false;
+        
+        if (model.Image != null)
+        {
+            existingEntity.Image = await imageService.UploadImageAsync(model.Image);
+        }
+
+        await context.SaveChangesAsync();
+
+        return true;
+    }
+    
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entity = await context.Countries.FindAsync(id);
+
+        if (entity == null)
+            return false;
+
+        entity.IsDeleted = true;
+
+        await context.SaveChangesAsync();
+
+        return true;
+
+    }
+
+    
 }

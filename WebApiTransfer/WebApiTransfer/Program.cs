@@ -37,8 +37,8 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbTransferContext>();
     db.Database.Migrate();
     
-    db.Countries.RemoveRange(db.Countries);
-    db.SaveChanges();
+    // db.Countries.RemoveRange(db.Countries);
+    // db.SaveChanges();
 
     if (!db.Countries.Any())
     {
