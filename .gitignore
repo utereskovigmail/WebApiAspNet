@@ -82,6 +82,8 @@ Thumbs.db
 desktop.ini
 $RECYCLE.BIN/
 
+package-lock.json
+
 ############################
 # Optional if using Docker
 ############################
