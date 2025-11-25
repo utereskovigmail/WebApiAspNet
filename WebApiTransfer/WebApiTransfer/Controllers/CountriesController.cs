@@ -21,7 +21,7 @@ public class CountriesController(
         return Ok(await countryService.GetListAsync());
     }
     
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> CreateCountry([FromForm] CountryCreateModel model)
     {
         var item = await countryService.CreateAsync(model);
@@ -29,15 +29,15 @@ public class CountriesController(
         return CreatedAtAction(null, item);
     }
     
-    [HttpPost]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         if (await countryService.DeleteAsync(id)) return Ok();
         else{return NotFound();}
 
     }
-    [HttpPost]
-    public async Task<IActionResult> EditAsync([FromForm] CountryEditModel model)
+    [HttpPut("edit/{id}")]
+    public async Task<IActionResult> EditAsync(int id, [FromForm] CountryEditModel model)
     {
         var res = await countryService.EditAsync(model);
         if (res) return Ok();

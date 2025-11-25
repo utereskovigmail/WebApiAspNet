@@ -35,23 +35,35 @@ public class CountryService(IMapper mapper,
     public async Task<bool> EditAsync(CountryEditModel model)
     {
         var existingEntity = await context.Countries.FindAsync(model.Id);
-
+    
         if (existingEntity == null)
             return false;
+    
+
+        var oldImagePath = existingEntity.Image;
         
         mapper.Map(model, existingEntity);
-        
+    
         existingEntity.IsDeleted = false;
         
         if (model.Image != null)
         {
+            if (!string.IsNullOrEmpty(oldImagePath))
+            {
+                var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "images", oldImagePath);
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                }
+            }
+
             existingEntity.Image = await imageService.UploadImageAsync(model.Image);
         }
-
+    
         await context.SaveChangesAsync();
-
         return true;
     }
+
     
     public async Task<bool> DeleteAsync(int id)
     {
