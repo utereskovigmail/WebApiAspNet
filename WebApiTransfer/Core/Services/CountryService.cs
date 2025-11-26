@@ -14,12 +14,12 @@ public class CountryService(IMapper mapper,
 {
     public async Task<List<CountryItemModel>> GetListAsync()
     {
-        var countryList = await context.Countries.ToListAsync();
+        var countryList = await context.Countries.Where(c => !c.IsDeleted).ToListAsync();
         var countryItems = mapper.Map<List<CountryItemModel>>(countryList);
         return countryItems;
     }
 
-    public async Task<CountryItemModel> CreateAsync(CountryCreateModel model)
+    public async Task<CountryItemModel> CreateAsync(CountryGeneralModel model)
     {
         var entity = mapper.Map<CountryEntity>(model);
         if (model.Image != null)
@@ -32,7 +32,7 @@ public class CountryService(IMapper mapper,
         return item;
     }
     
-    public async Task<bool> EditAsync(CountryEditModel model)
+    public async Task<bool> EditAsync(CountryGeneralModel model)
     {
         var existingEntity = await context.Countries.FindAsync(model.Id);
     

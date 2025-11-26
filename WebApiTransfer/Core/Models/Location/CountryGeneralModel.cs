@@ -1,16 +1,20 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Models.Location;
 
-public class CountryEditModel
+public class CountryGeneralModel
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
     public string Code { get; set; } = null!;
     public string Slug { get; set; } = null!;
+    
+
     public string Description { get; set; } = null!;
     public string ShortDescription { get; set; } = null!;
-    public List<string> Tags { get; set; } = null!; 
-    public IFormFile? Image { get; set; }
+    
+    public List<string> Tags { get; set; } = null!;
+    
+    public string? ImageStr { get; set; }
+    public IFormFile Image { get; set; } = null!;
 }

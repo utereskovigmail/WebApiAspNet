@@ -5,8 +5,8 @@ namespace Core.Interfaces;
 public interface ICountryService
 {
     Task<List<CountryItemModel>> GetListAsync();
-    Task<CountryItemModel> CreateAsync(CountryCreateModel model);
-    Task<bool> EditAsync(CountryEditModel model);
+    Task<CountryItemModel> CreateAsync(CountryGeneralModel model);
+    Task<bool> EditAsync(CountryGeneralModel model);
 
     Task<bool> DeleteAsync(int id);
 }

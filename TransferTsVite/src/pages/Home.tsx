@@ -1,7 +1,9 @@
 
 import {useQuery} from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+
 import axios from "axios";
-import type {Country} from "../Interfaces/Country.ts";
+import type {Country} from "../Interfaces/Countries/Country.ts";
 import {useState} from "react";
 import Modal from "../Modals/Country"
 import APP_ENV from "../env";
@@ -9,6 +11,7 @@ import APP_ENV from "../env";
 const Home = () =>{
     const api = APP_ENV.API_BASE_URL + "/api";
     // const url = "http://localhost:5055";
+    const queryClient = useQueryClient();
     const [selected, setSelected] = useState<Country | null>(null);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -23,6 +26,8 @@ const Home = () =>{
     }
 
 
+
+
     const {data, isLoading, error} = useQuery<Country[]>({
         queryKey: ["countries"],
         queryFn: async () => {
@@ -30,7 +35,24 @@ const Home = () =>{
             return res.data;
         }
     });
-    console.log(data);
+
+
+
+    async function Delete(id: number) {
+        try {
+            const res = await axios.delete(`${api}/countries/delete/${id}`);
+
+            if (res.status === 200) {
+                console.log("Successfully deleted");
+                await queryClient.invalidateQueries({ queryKey: ["countries"] });
+
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error deleting the data");
+        }
+    }
+
 
     if(error) return <p className={"text-4xl text-center text-red-800"}>Error loading Users</p>
     if(isLoading) return <p className={"text-4xl text-center text-blue-500"}>Loading...</p>
@@ -38,7 +60,11 @@ const Home = () =>{
 
     return (
         <div className={"w-full p-4 flex flex-row flex-wrap gap-4 justify-center"}>
+
+            {!data && <p className={"text-center text-xl my-4"}>No data found</p>}
             {
+
+
                 data?.map((item, index:number) => (
                     <div
                         key={index}
@@ -63,13 +89,27 @@ const Home = () =>{
                             <p className="mt-2 text-gray-600 text-sm">
                                 {item.description}
                             </p>
+                            <div className="flex items-center justify-center gap-4">
+                                <button
+                                    onClick={() => openModal(item)}
+                                    className="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition"
+                                >
+                                    Read more →
+                                </button>
 
-                            <button
-                                onClick={() => openModal(item)}
-                                className="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition"
-                            >
-                                Read more →
-                            </button>
+                                <button
+                                    onClick={() => Delete(item.id)}
+                                    className={"mt-6 inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition"}>
+                                    Delete
+                                </button>
+
+                                <button
+                                    onClick={() => Delete(item.id)}
+                                    className={"mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"}>
+                                    Edit
+                                </button>
+                            </div>
+
 
                         </div>
                     </div>

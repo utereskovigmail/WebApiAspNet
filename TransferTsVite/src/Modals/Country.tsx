@@ -1,5 +1,5 @@
 
-import type { Country } from "../Interfaces/Country";
+import type { Country } from "../Interfaces/Countries/Country.ts";
 
 interface ModalProps {
     isOpen: boolean;

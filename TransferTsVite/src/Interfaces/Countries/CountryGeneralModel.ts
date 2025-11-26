@@ -1,4 +1,4 @@
-export interface Country {
+export interface CountryGeneralModel {
     id: number;
     name: string;
     code: string;
@@ -6,5 +6,6 @@ export interface Country {
     description: string;
     shortDescription: string;
     tags: string[];
-    image: string | null;
+    imageStr: string | null;
+    image: File | null;
 }

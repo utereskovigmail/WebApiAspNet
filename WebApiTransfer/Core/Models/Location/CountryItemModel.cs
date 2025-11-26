@@ -1,4 +1,6 @@
-﻿namespace Core.Models.Location;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Core.Models.Location;
 
 public class CountryItemModel
 {

@@ -22,11 +22,21 @@ public class CountriesController(
     }
     
     [HttpPost("create")]
-    public async Task<IActionResult> CreateCountry([FromForm] CountryCreateModel model)
+    public async Task<IActionResult> CreateCountry([FromForm] CountryGeneralModel model)
     {
         var item = await countryService.CreateAsync(model);
 
-        return CreatedAtAction(null, item);
+        return Ok(item);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var item = await context.Countries.FindAsync(id);
+        if (item == null) return NotFound();
+        var model = mapper.Map<CountryGeneralModel>(item);
+        
+        return Ok(model);
     }
     
     [HttpDelete("delete/{id}")]
@@ -37,7 +47,7 @@ public class CountriesController(
 
     }
     [HttpPut("edit/{id}")]
-    public async Task<IActionResult> EditAsync(int id, [FromForm] CountryEditModel model)
+    public async Task<IActionResult> EditAsync(int id, [FromForm] CountryGeneralModel model)
     {
         var res = await countryService.EditAsync(model);
         if (res) return Ok();
