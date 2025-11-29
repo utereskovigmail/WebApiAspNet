@@ -29,6 +29,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<ICityService, CityService>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {

@@ -7,13 +7,16 @@ import type {Country} from "../Interfaces/Countries/Country.ts";
 import {useState} from "react";
 import Modal from "../Modals/Country"
 import APP_ENV from "../env";
+import {useNavigate} from "react-router-dom";
 
 const Home = () =>{
     const api = APP_ENV.API_BASE_URL + "/api";
     // const url = "http://localhost:5055";
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [selected, setSelected] = useState<Country | null>(null);
     const [isOpen, setIsOpen] = useState(false);
+    // const [selectedCountryId, setSelectedCountryId] = useState<number>(-1);
 
 
     function openModal(item: Country){
@@ -109,6 +112,19 @@ const Home = () =>{
                                     Edit
                                 </button>
                             </div>
+
+                            <button
+                                onClick={() => navigate(`/cities/${item.id}`)}
+                                className="mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"
+                            >
+                                View Cities
+                            </button>
+
+
+
+
+
+
 
 
                         </div>

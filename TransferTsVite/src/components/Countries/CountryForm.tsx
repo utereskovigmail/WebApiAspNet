@@ -60,7 +60,7 @@ const CountryForm: React.FC<CountryFormProps> = ({ initialValue, onSubmit }) => 
             encType="multipart/form-data"
         >
             <h2 className="text-2xl font-semibold text-gray-800">
-                {id ? "Edit Country" : "Create Country"}
+                {id ? "Edit Country" : "CreateCountry Country"}
             </h2>
 
 

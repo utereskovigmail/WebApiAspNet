@@ -2,7 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import HomePage from "../pages/Home";
 import AboutPage from "../pages/About";
-import CreatePage from "../pages/Create";
+import CreateCountryPage from "../pages/CreateCountry";
+import CreateCityPage from "../pages/CreateCity";
+import AllCities from "../pages/AllCities";
 
 export const router = createBrowserRouter([
     {
@@ -10,8 +12,10 @@ export const router = createBrowserRouter([
         element: <App />,
         children: [
             { path: "", element: <HomePage /> },
-            {path: "create", element: <CreatePage />},
+            {path: "createCountry", element: <CreateCountryPage />},
             { path: "about", element: <AboutPage /> },
+            {path: "createCity", element: <CreateCityPage/>},
+            { path: "cities/:countryId", element: <AllCities /> }
         ],
     },
 ]);

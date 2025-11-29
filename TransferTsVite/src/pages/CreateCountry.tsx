@@ -3,7 +3,7 @@ import CountryForm from "../components/Countries/CountryForm";
 import axios from "axios";
 import API_BASE_URL from "../env/index";
 import {useNavigate} from "react-router-dom";
-function Create(){
+function CreateCountry(){
     const emptyCountry: CountryGeneralModel = {
         id: 0,
         name: "",
@@ -46,4 +46,4 @@ function Create(){
     );
 }
 
-export default Create;
+export default CreateCountry;

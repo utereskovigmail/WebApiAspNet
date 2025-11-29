@@ -20,6 +20,6 @@ public class CountryEntity : BaseEntity<int>
     public List<string> Tags { get; set; } = new List<string>();
     public string? Image { get; set; }
     
-
+    public List<CityEntity> Cities { get; set; } = new List<CityEntity>();
 
 }

@@ -5,8 +5,10 @@ export default function Header() {
         <header className="p-4 bg-blue-600 text-white">
             <nav className="flex gap-4">
                 <Link to="/" className="hover:underline">Home</Link>
-                <Link to="/create" className="hover:underline">Create</Link>
+                <Link to="/createCountry" className="hover:underline">Create country</Link>
+                <Link to="/createCity" className="hover:underline">Create city</Link>
                 <Link to="/about" className="hover:underline">About</Link>
+
             </nav>
         </header>
     );
