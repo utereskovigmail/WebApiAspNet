@@ -5,7 +5,7 @@ import AboutPage from "../pages/About";
 import CreateCountryPage from "../pages/CreateCountry";
 import CreateCityPage from "../pages/CreateCity";
 import AllCities from "../pages/AllCities";
-
+import Landing from "../pages/Landing";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -15,7 +15,8 @@ export const router = createBrowserRouter([
             {path: "createCountry", element: <CreateCountryPage />},
             { path: "about", element: <AboutPage /> },
             {path: "createCity", element: <CreateCityPage/>},
-            { path: "cities/:countryId", element: <AllCities /> }
+            { path: "cities/:countryId", element: <AllCities /> },
+            {path: "landing", element: <Landing/>}
         ],
     },
 ]);
