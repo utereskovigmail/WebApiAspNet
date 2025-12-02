@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -8,13 +9,15 @@ namespace Core.Services;
 public class JwtTokenService
 {
     private readonly IConfiguration _config;
+    private readonly UserManager<UserEntity> _manager;
 
-    public JwtTokenService(IConfiguration config)
+    public JwtTokenService(IConfiguration config, UserManager<UserEntity> manager)
     {
         _config = config;
+        _manager = manager;
     }
 
-    public string CreateToken(UserEntity user)
+    public async Task<string> CreateToken(UserEntity user)
     {
         var claims = new List<Claim>
         {
@@ -31,6 +34,11 @@ public class JwtTokenService
 
         if (!string.IsNullOrEmpty(user.Image))
             claims.Add(new Claim("image", user.Image));
+        
+        foreach (var role in (await _manager.GetRolesAsync(user)))
+        {
+            claims.Add(new Claim("roles", role));
+        }
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)

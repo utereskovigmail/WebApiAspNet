@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Core.Models.Location;
 using Domain;
 using Domain.Entities.Location;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApiTransfer.Controllers;
@@ -40,6 +41,7 @@ public class CountriesController(
     }
     
     [HttpDelete("delete/{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         if (await countryService.DeleteAsync(id)) return Ok();
@@ -47,6 +49,7 @@ public class CountriesController(
 
     }
     [HttpPut("edit/{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> EditAsync(int id, [FromForm] CountryGeneralModel model)
     {
         var res = await countryService.EditAsync(model);
