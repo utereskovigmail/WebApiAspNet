@@ -114,6 +114,56 @@ namespace Domain.Migrations
                     b.ToTable("tblCountries");
                 });
 
+            modelBuilder.Entity("Domain.Entities.TransportationEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ArrivalTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DepartureTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FromCityId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("SeatsAvailable")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SeatsTotal")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ToCityId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromCityId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("ToCityId");
+
+                    b.ToTable("tblTransportations");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -202,7 +252,7 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WorkingMVC.Data.Entities.Identity.RoleEntity", b =>
+            modelBuilder.Entity("RoleEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,7 +281,31 @@ namespace Domain.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("WorkingMVC.Data.Entities.Identity.UserEntity", b =>
+            modelBuilder.Entity("TransportationStatusEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tblTransportationStatuses");
+                });
+
+            modelBuilder.Entity("UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,7 +381,7 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WorkingMVC.Data.Entities.Identity.UserRoleEntity", b =>
+            modelBuilder.Entity("UserRoleEntity", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -333,9 +407,36 @@ namespace Domain.Migrations
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("Domain.Entities.TransportationEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.Location.CityEntity", "FromCity")
+                        .WithMany("Departures")
+                        .HasForeignKey("FromCityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TransportationStatusEntity", "Status")
+                        .WithMany("Transportations")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Location.CityEntity", "ToCity")
+                        .WithMany("Arrivals")
+                        .HasForeignKey("ToCityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FromCity");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("ToCity");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("WorkingMVC.Data.Entities.Identity.RoleEntity", null)
+                    b.HasOne("RoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -344,7 +445,7 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("WorkingMVC.Data.Entities.Identity.UserEntity", null)
+                    b.HasOne("UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -353,7 +454,7 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("WorkingMVC.Data.Entities.Identity.UserEntity", null)
+                    b.HasOne("UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -362,22 +463,22 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("WorkingMVC.Data.Entities.Identity.UserEntity", null)
+                    b.HasOne("UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorkingMVC.Data.Entities.Identity.UserRoleEntity", b =>
+            modelBuilder.Entity("UserRoleEntity", b =>
                 {
-                    b.HasOne("WorkingMVC.Data.Entities.Identity.RoleEntity", "Role")
+                    b.HasOne("RoleEntity", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WorkingMVC.Data.Entities.Identity.UserEntity", "User")
+                    b.HasOne("UserEntity", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -388,17 +489,29 @@ namespace Domain.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Location.CityEntity", b =>
+                {
+                    b.Navigation("Arrivals");
+
+                    b.Navigation("Departures");
+                });
+
             modelBuilder.Entity("Domain.Entities.Location.CountryEntity", b =>
                 {
                     b.Navigation("Cities");
                 });
 
-            modelBuilder.Entity("WorkingMVC.Data.Entities.Identity.RoleEntity", b =>
+            modelBuilder.Entity("RoleEntity", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("WorkingMVC.Data.Entities.Identity.UserEntity", b =>
+            modelBuilder.Entity("TransportationStatusEntity", b =>
+                {
+                    b.Navigation("Transportations");
+                });
+
+            modelBuilder.Entity("UserEntity", b =>
                 {
                     b.Navigation("UserRoles");
                 });

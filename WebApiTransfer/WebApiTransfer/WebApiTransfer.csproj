@@ -30,6 +30,7 @@
 
 	<ItemGroup>
 	  <Folder Include="images\" />
+	  <Folder Include="Seeding\Cities\Images\" />
 	</ItemGroup>
 
 </Project>

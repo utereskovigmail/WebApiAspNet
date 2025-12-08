@@ -4,9 +4,9 @@ using Core.Interfaces;
 using Core.Models.Identity;
 using Core.Services;
 using Domain;
+using Domain.Entities;
 using Domain.Entities.Location;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,24 +25,23 @@ builder.Services.AddDbContext<AppDbTransferContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
 var assemblyName = typeof(LoginModel).Assembly.GetName().Name;
 
-
-//Summaries + Examples for swager / jwt token field
+// Swagger WITHOUT JWT security
 builder.Services.AddSwaggerGen(opt =>
 {
     var fileDoc = $"{assemblyName}.xml";
     var filePath = Path.Combine(AppContext.BaseDirectory, fileDoc);
     opt.IncludeXmlComments(filePath);
-
+    
     opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme.",
         Name = "Authorization",
-        In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer"
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter JWT token in the format: Bearer {your token}"
     });
 
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -52,22 +51,14 @@ builder.Services.AddSwaggerGen(opt =>
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
-            new string[]{}
+            new string[] {}
         }
     });
-
 });
-
-
-builder.Services.AddSwaggerGen();
-
-
-builder.Services.AddCors();
-
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -75,6 +66,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<JwtTokenService>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -82,6 +74,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+// Identity without JWT
 builder.Services.AddIdentityCore<UserEntity>(options =>
     {
         options.Password.RequireDigit = false;
@@ -94,55 +87,76 @@ builder.Services.AddIdentityCore<UserEntity>(options =>
     .AddEntityFrameworkStores<AppDbTransferContext>()
     .AddSignInManager<SignInManager<UserEntity>>();
 
-builder.Services.AddScoped<JwtTokenService>();
-builder.Services.AddAuthentication(options =>
+// Removed: JwtTokenService
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+        )
+    };
+
+    // VERY IMPORTANT: read JWT from Authorization header
+    options.Events = new JwtBearerEvents
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        OnMessageReceived = context =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+            var authHeader = context.Request.Headers["Authorization"].ToString();
 
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-            )
-        };
-    });
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+            {
+                context.Token = authHeader.Substring("Bearer ".Length);
+            }
 
+            return Task.CompletedTask;
+        }
+    };
+});
+
+// Removed: AddJwtBearer()
+// Removed: JWT cookie extraction
 
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<ValidationFilter>();
 });
 
+// BEFORE builder.Build()
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .WithHeaders("Authorization", "Content-Type")
+            .AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbTransferContext>();
     db.Database.Migrate();
-    
-    // db.Countries.RemoveRange(db.Countries);
-    // db.SaveChanges();
 
     if (!db.Countries.Any())
     {
         var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Countries/CountrySeeding.json");
         var json = File.ReadAllText(jsonPath);
-        
-        
-        
+
         var items = JsonSerializer.Deserialize<List<CountryEntity>>(json);
 
         foreach (var item in items)
@@ -150,14 +164,31 @@ using (var scope = app.Services.CreateScope())
             var fileName = await imageService.UploadLocalImageAsync($"Seeding/Countries/Images/{item.Image}");
             item.Image = fileName;
         }
-        
+
         db.Countries.AddRange(items);
         db.SaveChanges();
     }
-    
+
+    if (!db.Cities.Any())
+    {
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Cities/CitySeeding.json");
+        var json = File.ReadAllText(jsonPath);
+
+        var items = JsonSerializer.Deserialize<List<CityEntity>>(json);
+
+        foreach (var item in items)
+        {
+            var fileName = await imageService.UploadLocalImageAsync($"Seeding/Cities/Images/{item.Image}");
+            item.Image = fileName;
+        }
+
+        db.Cities.AddRange(items);
+        db.SaveChanges();
+    }
+
     var myAppDbContext = scope.ServiceProvider.GetRequiredService<AppDbTransferContext>();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<RoleEntity>>();
-    myAppDbContext.Database.Migrate(); //якщо ми не робили міграціії
+    myAppDbContext.Database.Migrate();
 
     var roles = new[] { "User", "Admin" };
     foreach (var role in roles)
@@ -167,6 +198,7 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new RoleEntity { Name = role });
         }
     }
+
     if (!myAppDbContext.Users.Any())
     {
         var userManager = scope.ServiceProvider
@@ -185,25 +217,30 @@ using (var scope = app.Services.CreateScope())
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
     }
-}
 
-app.UseCors(policy =>
-    policy.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+    if (!db.TransportationStatuses.Any())
+    {
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/TransportationStatus/TransportationStatuses.json");
+        var json = File.ReadAllText(jsonPath);
+        var items = JsonSerializer.Deserialize<List<TransportationStatusEntity>>(json);
+        db.TransportationStatuses.AddRange(items);
+        db.SaveChanges();
+    }
+
+    if (!db.Transportations.Any())
+    {
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Transporation/Transportations.json");
+        var json = File.ReadAllText(jsonPath);
+        var items = JsonSerializer.Deserialize<List<TransportationEntity>>(json);
+        db.Transportations.AddRange(items);
+        db.SaveChanges();
+    }
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-
 var dirImageName = builder.Configuration.GetValue<string>("DirImageName") ?? "images";
-
-// Console.WriteLine("Image dir {0}", dirImageName);
 var path = Path.Combine(Directory.GetCurrentDirectory(), dirImageName);
 Directory.CreateDirectory(dirImageName);
 
@@ -212,5 +249,15 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(path),
     RequestPath = $"/{dirImageName}"
 });
+
+app.UseRouting();
+
+app.UseCors("AllowFrontend");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapControllers();
 
 app.Run();

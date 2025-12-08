@@ -22,10 +22,11 @@ const LogIn: React.FC = () => {
         try {
             const res = await axios.post(
                 ENV.API_BASE_URL + "/api/entity/login",
-                model
+                model,
             );
 
             console.log("Registered:", res.data);
+            localStorage.setItem("token", res.data.token);
             alert("Log in successful!");
             navigate("/");
         } catch (err) {

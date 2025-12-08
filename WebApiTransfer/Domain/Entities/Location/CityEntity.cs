@@ -15,10 +15,14 @@ public class CityEntity : BaseEntity<int>
     public string? Image { get; set; }
 
     public string? Description { get; set; }
-    
+
+    // Зовнішній ключ на країну
     [ForeignKey(nameof(Country))]
     public int CountryId { get; set; }
 
     public CountryEntity Country { get; set; } = null!;
+
+    public ICollection<TransportationEntity> Departures { get; set; }
+    public ICollection<TransportationEntity> Arrivals { get; set; }
 
 }

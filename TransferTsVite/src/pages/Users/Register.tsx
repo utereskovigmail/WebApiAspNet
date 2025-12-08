@@ -41,10 +41,12 @@ const Register: React.FC = () => {
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
-                }
+                },
+
             );
 
             console.log("Registered:", res.data);
+            localStorage.setItem("token", res.data.token);
             alert("Registration successful!");
         } catch (err) {
             console.error("Error:", err);

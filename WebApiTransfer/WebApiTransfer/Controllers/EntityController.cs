@@ -1,10 +1,13 @@
+using System.Security.Claims;
 using Core.Interfaces;
 using Core.Mappers;
 using Core.Models.Identity;
 using Core.Services;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApiTransfer.Controllers;
 
@@ -13,7 +16,8 @@ namespace WebApiTransfer.Controllers;
 
 public class EntityController(UserManager<UserEntity> manager,
     JwtTokenService jwtTokenService,
-    IImageService imageService)
+    IImageService imageService,
+    RoleManager<RoleEntity> roleManager)
     :ControllerBase
 {
     [HttpPost]
@@ -66,6 +70,8 @@ public class EntityController(UserManager<UserEntity> manager,
             return Unauthorized("Invalid username or password");
         }
         var token = await jwtTokenService.CreateToken(user);
+
+
         
         return Ok(new { token });
     }
@@ -94,8 +100,46 @@ public class EntityController(UserManager<UserEntity> manager,
         {
             return BadRequest(result.Errors);
         }
+        
+        if (!await roleManager.RoleExistsAsync("User"))
+        {
+            await roleManager.CreateAsync(new RoleEntity { Name = "User" });
+        }
 
-        var token = jwtTokenService.CreateToken(entity);
+        var token = await jwtTokenService.CreateToken(entity);
+        
+
+        
         return Ok(new { token });
     }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Me()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+            return Unauthorized();
+
+        var user = await manager.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .FirstOrDefaultAsync(u => u.Id == int.Parse(userId));
+
+
+        if (user == null)
+            return Unauthorized();
+
+        return Ok(new
+        {
+            id = user.Id,
+            email = user.Email,
+            firstName = user.FirstName,
+            lastName = user.LastName,
+            image = user.Image,
+            roles = user.UserRoles.Select(x => x.Role.Name)
+        });
+    }
+
 }

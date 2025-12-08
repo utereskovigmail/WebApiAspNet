@@ -8,6 +8,7 @@ import AllCities from "../pages/AllCities";
 import Landing from "../pages/Landing";
 import Register from "../pages/Users/Register";
 import LogIn from "../pages/Users/LogIn";
+import Profile from "../pages/Users/Profile";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -20,7 +21,8 @@ export const router = createBrowserRouter([
             { path: "cities/:countryId", element: <AllCities /> },
             {path: "landing", element: <Landing/>},
             {path: "user/register", element: <Register/>},
-            {path: "user/LogIn", element: <LogIn/>}
+            {path: "user/LogIn", element: <LogIn/>},
+            {path: "user/Profile", element: <Profile/>}
         ],
     },
 ]);
