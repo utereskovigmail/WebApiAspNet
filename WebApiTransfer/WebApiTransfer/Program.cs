@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
 using Core.Interfaces;
@@ -15,11 +16,14 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApiTransfer.Filters;
+using WebApiTransfer.ProgramTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
 IImageService imageService = new ImageService(builder.Configuration);
 
+
+string st = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 builder.Services.AddDbContext<AppDbTransferContext>(options =>
     options.UseNpgsql(
@@ -67,6 +71,9 @@ builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddHostedService<StartupTask>();
+builder.Services.AddScoped<ISmtpServiceDeployAdmins, SmtpServiceDeployAdminsDeployAdmins>();
+
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -133,17 +140,23 @@ builder.Services.AddMvc(options =>
 // BEFORE builder.Build()
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    options.AddPolicy("AllowTwoDomains", policy =>
     {
-        policy
-            .WithOrigins("http://localhost:5173")
-            .WithHeaders("Authorization", "Content-Type")
-            .AllowAnyMethod();
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "https://passangertrans.netlify.app"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
 
+
 var app = builder.Build();
+
+app.UseCors("AllowTwoDomains");
 
 // Configure the HTTP request pipeline.
 
@@ -205,8 +218,8 @@ using (var scope = app.Services.CreateScope())
             .GetRequiredService<UserManager<UserEntity>>();
         var adminUser = new UserEntity
         {
-            UserName = "admin@gmail.com",
-            Email = "admin@gmail.com",
+            UserName = "Tereshkovych",
+            Email = "tereshkovych_yurii@gymnasia21.lutsk.ua",
             FirstName = "System",
             LastName = "Administrator",
             Image = "default.jpg"
@@ -242,13 +255,17 @@ app.UseSwaggerUI();
 
 var dirImageName = builder.Configuration.GetValue<string>("DirImageName") ?? "images";
 var path = Path.Combine(Directory.GetCurrentDirectory(), dirImageName);
-Directory.CreateDirectory(dirImageName);
+
+Directory.CreateDirectory(path); 
 
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(path),
-    RequestPath = $"/{dirImageName}"
+    RequestPath = "/" + dirImageName
 });
+
+
+
 
 app.UseRouting();
 
@@ -259,5 +276,7 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+Console.WriteLine($"ENV: {builder.Environment.EnvironmentName}");
 
 app.Run();

@@ -8,9 +8,10 @@ import {useState} from "react";
 import Modal from "../Modals/Country"
 import APP_ENV from "../env";
 import {useNavigate} from "react-router-dom";
+import api from "../components/axios/authorized";
 
 const Home = () =>{
-    const api = APP_ENV.API_BASE_URL + "/api";
+    const api_src = APP_ENV.API_BASE_URL + "/api";
     // const url = "http://localhost:5055";
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -34,7 +35,7 @@ const Home = () =>{
     const {data, isLoading, error} = useQuery<Country[]>({
         queryKey: ["countries"],
         queryFn: async () => {
-            const res = await axios.get(api + "/countries");
+            const res = await axios.get(api_src + "/countries");
             return res.data;
         }
     });
@@ -43,7 +44,7 @@ const Home = () =>{
 
     async function Delete(id: number) {
         try {
-            const res = await axios.delete(`${api}/countries/delete/${id}`);
+            const res = await api.delete("/Countries/delete/" + id);
 
             if (res.status === 200) {
                 console.log("Successfully deleted");
@@ -107,7 +108,7 @@ const Home = () =>{
                                 </button>
 
                                 <button
-                                    onClick={() => Delete(item.id)}
+                                    // onClick={() => Delete(item.id)}
                                     className={"mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"}>
                                     Edit
                                 </button>

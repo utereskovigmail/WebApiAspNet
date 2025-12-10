@@ -23,15 +23,16 @@ function AllCities() {
 
 
     return (
-     <div>
+     <div className={"flex justify-center gap-4 flex-wrap"}>
              {!data && <p className={"text-center text-xl my-4"}>No data found</p>}
+
         {
 
 
         data?.map((item, index:number) => (
             <div
                 key={index}
-                className="max-w-sm bg-white rounded-xl shadow-md overflow-hidden border border-gray-200"
+                className="max-w-sm bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 "
             >
                 <img
                     src={`${api}/images/${item.image}`}

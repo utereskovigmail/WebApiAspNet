@@ -1,0 +1,79 @@
+[
+  {
+    "Id": 1,
+    "Code": "PS101",
+    "FromCityId": 1,
+    "ToCityId": 2,
+    "DepartureTime": "2025-03-20T08:30:00Z",
+    "ArrivalTime": "2025-03-20T12:45:00Z",
+    "SeatsTotal": 150,
+    "SeatsAvailable": 45,
+    "StatusId": 1
+  },
+  {
+    "Id": 2,
+    "Code": "PS202",
+    "FromCityId": 3,
+    "ToCityId": 4,
+    "DepartureTime": "2025-03-21T14:00:00Z",
+    "ArrivalTime": "2025-03-21T17:30:00Z",
+    "SeatsTotal": 120,
+    "SeatsAvailable": 12,
+    "StatusId": 2
+  },
+  {
+    "Id": 3,
+    "Code": "PS303",
+    "FromCityId": 5,
+    "ToCityId": 6,
+    "DepartureTime": "2025-03-22T09:15:00Z",
+    "ArrivalTime": "2025-03-22T11:50:00Z",
+    "SeatsTotal": 100,
+    "SeatsAvailable": 0,
+    "StatusId": 5
+  },
+  {
+    "Id": 4,
+    "Code": "PS404",
+    "FromCityId": 7,
+    "ToCityId": 8,
+    "DepartureTime": "2025-03-23T07:00:00Z",
+    "ArrivalTime": "2025-03-23T09:40:00Z",
+    "SeatsTotal": 80,
+    "SeatsAvailable": 23,
+    "StatusId": 1
+  },
+  {
+    "Id": 5,
+    "Code": "PS505",
+    "FromCityId": 9,
+    "ToCityId": 10,
+    "DepartureTime": "2025-03-24T16:30:00Z",
+    "ArrivalTime": "2025-03-24T19:55:00Z",
+    "SeatsTotal": 140,
+    "SeatsAvailable": 5,
+    "StatusId": 3
+  },
+  {
+    "Id": 6,
+    "Code": "PS606",
+    "FromCityId": 11,
+    "ToCityId": 12,
+    "DepartureTime": "2025-03-25T10:10:00Z",
+    "ArrivalTime": "2025-03-25T13:45:00Z",
+    "SeatsTotal": 160,
+    "SeatsAvailable": 160,
+    "StatusId": 1
+  },
+  {
+    "Id": 7,
+    "Code": "PS707",
+    "FromCityId": 2,
+    "ToCityId": 5,
+    "DepartureTime": "2025-03-26T12:00:00Z",
+    "ArrivalTime": "2025-03-26T15:40:00Z",
+    "SeatsTotal": 110,
+    "SeatsAvailable": 54,
+    "StatusId": 4
+  }
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "Id": 1,
+    "Name": "New York",
+    "Slug": "new-york",
+    "Image": "new-york.jpg",
+    "Description": "The largest city in the United States, known for its skyline, culture, and global influence.",
+    "CountryId": 1
+  },
+  {
+    "Id": 2,
+    "Name": "Los Angeles",
+    "Slug": "los-angeles",
+    "Image": "los-angeles.jpg",
+    "Description": "A major coastal city in California known for entertainment, beaches, and Hollywood.",
+    "CountryId": 1
+  },
+  {
+    "Id": 3,
+    "Name": "Toronto",
+    "Slug": "toronto",
+    "Image": "toronto.jpg",
+    "Description": "Canada’s largest city and a major multicultural hub.",
+    "CountryId": 2
+  },
+  {
+    "Id": 4,
+    "Name": "Vancouver",
+    "Slug": "vancouver",
+    "Image": "vancouver.jpg",
+    "Description": "A coastal Canadian city known for nature, mountains, and modern lifestyle.",
+    "CountryId": 2
+  },
+  {
+    "Id": 5,
+    "Name": "London",
+    "Slug": "london",
+    "Image": "london.jpg",
+    "Description": "The capital of the UK, known for history, architecture, and global influence.",
+    "CountryId": 3
+  },
+  {
+    "Id": 6,
+    "Name": "Manchester",
+    "Slug": "manchester",
+    "Image": "manchester.jpg",
+    "Description": "A major UK city known for music, football, and industrial heritage.",
+    "CountryId": 3
+  },
+  {
+    "Id": 7,
+    "Name": "Berlin",
+    "Slug": "berlin",
+    "Image": "berlin.jpg",
+    "Description": "Germany’s capital, known for innovation, history, and culture.",
+    "CountryId": 4
+  },
+  {
+    "Id": 8,
+    "Name": "Munich",
+    "Slug": "munich",
+    "Image": "munich.jpg",
+    "Description": "A lively German city famous for technology, beer culture, and Bavarian heritage.",
+    "CountryId": 4
+  },
+  {
+    "Id": 9,
+    "Name": "Paris",
+    "Slug": "paris",
+    "Image": "paris.jpg",
+    "Description": "The French capital known for art, fashion, cuisine, and romance.",
+    "CountryId": 5
+  },
+  {
+    "Id": 10,
+    "Name": "Lyon",
+    "Slug": "lyon",
+    "Image": "lyon.jpg",
+    "Description": "A French city known for gastronomy and historical architecture.",
+    "CountryId": 5
+  },
+  {
+    "Id": 11,
+    "Name": "Kyiv",
+    "Slug": "kyiv",
+    "Image": "kyiv.jpg",
+    "Description": "The capital of Ukraine with deep history, culture, and modern development.",
+    "CountryId": 6
+  },
+  {
+    "Id": 12,
+    "Name": "Lviv",
+    "Slug": "lviv",
+    "Image": "lviv.jpg",
+    "Description": "A cultural center of Ukraine known for its old town and European charm.",
+    "CountryId": 6
+  }
+]

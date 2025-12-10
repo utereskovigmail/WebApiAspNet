@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Core</name>
+    </assembly>
+    <members>
+        <member name="P:Core.Models.Identity.LoginModel.Email">
+            <summary>
+            Emain
+            </summary>
+            <example>admin@gmail.com</example>
+        </member>
+        <member name="P:Core.Models.Identity.LoginModel.Password">
+            <summary>
+            Password
+            </summary>
+            <example>Admin123</example>
+        </member>
+    </members>
+</doc>
