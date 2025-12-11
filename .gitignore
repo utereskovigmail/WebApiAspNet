@@ -12,6 +12,9 @@ out/
 *.publish/
 App_Data/
 
+appsettings.json
+appsettings.Development.json
+
 # Logs
 *.log
 
