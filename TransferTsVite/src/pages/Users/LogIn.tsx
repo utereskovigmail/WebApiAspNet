@@ -3,16 +3,23 @@ import axios from "axios";
 import ENV from "../../env/index";
 import {useNavigate} from "react-router-dom";
 import type {Login} from "../../Interfaces/User/Login.ts";
+import {jwtDecode} from "jwt-decode";
+import type {LoginSuccess} from "../../Interfaces/User/LoginSuccess.ts";
+import type UserTokenInfo from "../../Interfaces/User/UserTokenInfo.ts";
+import {useAppDispatch} from "../../store";
+import {loginSuccess} from "../../services/authSlice.ts";
 
 const LogIn: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const navigate = useNavigate();
-
+    const appDispatch = useAppDispatch();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+
 
         const model:Login = {
             email,
@@ -20,14 +27,20 @@ const LogIn: React.FC = () => {
         }
 
         try {
-            const res = await axios.post(
+            const res = await axios.post<LoginSuccess>(
                 ENV.API_BASE_URL + "/api/entity/login",
                 model,
             );
-
+            const token:string = res.data.token;
+            const decode:UserTokenInfo = jwtDecode(token);
+            console.log(decode);
             console.log("Registered:", res.data);
             localStorage.setItem("token", res.data.token);
+
+            appDispatch(loginSuccess(token));
             alert("Log in successful!");
+
+
             navigate("/");
         } catch (err) {
             console.error("Error:", err);

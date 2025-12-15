@@ -9,6 +9,7 @@ import Modal from "../Modals/Country"
 import APP_ENV from "../env";
 import {useNavigate} from "react-router-dom";
 import api from "../components/axios/authorized";
+import {useAppSelector} from "../store";
 
 const Home = () =>{
     const api_src = APP_ENV.API_BASE_URL + "/api";
@@ -18,6 +19,8 @@ const Home = () =>{
     const [selected, setSelected] = useState<Country | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     // const [selectedCountryId, setSelectedCountryId] = useState<number>(-1);
+
+    const isAdmin = useAppSelector(redux => redux.auth.isAdmin);
 
 
     function openModal(item: Country){
@@ -96,30 +99,42 @@ const Home = () =>{
                             <div className="flex items-center justify-center gap-4">
                                 <button
                                     onClick={() => openModal(item)}
-                                    className="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition"
-                                >
+                                    className={`mt-6 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition ${
+                                        isAdmin ? "" : "w-full mx-4"
+                                    }`}>
                                     Read more →
                                 </button>
 
-                                <button
-                                    onClick={() => Delete(item.id)}
-                                    className={"mt-6 inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition"}>
-                                    Delete
-                                </button>
+                                {
+                                    isAdmin &&
+                                    <div className={"flex items-center justify-center gap-4"}>
+                                        <button
+                                            onClick={() => Delete(item.id)}
+                                            className={"mt-6 inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition"}>
+                                            Delete
+                                        </button>
 
+                                        <button
+                                            // onClick={() => Delete(item.id)}
+                                            className={"mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"}>
+                                            Edit
+                                        </button>
+                                    </div>
+                                }
+
+
+                            </div>
+                            <div className={"px-4"}>
                                 <button
-                                    // onClick={() => Delete(item.id)}
-                                    className={"mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"}>
-                                    Edit
+                                    onClick={() => navigate(`/cities/${item.id}`)}
+                                    className={`mt-6 inline-flex items-center justify-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition ${
+                                        isAdmin ? "" : "w-full"
+                                    }`}
+                                >
+                                    View Cities
                                 </button>
                             </div>
 
-                            <button
-                                onClick={() => navigate(`/cities/${item.id}`)}
-                                className="mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"
-                            >
-                                View Cities
-                            </button>
 
 
 

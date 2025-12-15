@@ -3,12 +3,18 @@ import type AuthUser from "../../Interfaces/User/AuthUser";
 import ENV from "../../env/index";
 import {useEffect, useState} from "react";
 import api from "../../components/axios/authorized.tsx";
+import {useNavigate} from "react-router-dom";
+import {useQueryClient} from "@tanstack/react-query";
+import {logout} from "../../services/authSlice.ts";
+import {useAppDispatch} from "../../store";
 
 
 
 export default function ProfilePage() {
     const [user, setUser] = useState<AuthUser | null>(null);
     // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadUser = async () => {
@@ -23,6 +29,11 @@ export default function ProfilePage() {
 
         loadUser();
     }, []);
+
+    const appDispatch = useAppDispatch();
+
+    const queryClient = useQueryClient();
+
     return (
         <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">
             {
@@ -69,7 +80,8 @@ export default function ProfilePage() {
                                 Edit Profile
                             </button>
 
-                            <button className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white font-medium">
+                            <button onClick={()=> {appDispatch(logout());navigate('/')}}
+                                className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white font-medium">
                                 Logout
                             </button>
                         </div>

@@ -1,59 +1,57 @@
-import { Link } from "react-router-dom";
-import api from "../components/axios/authorized"
-import ENV from "../env/index";
-import {useEffect, useState} from "react";
-import type AuthUser from "../Interfaces/User/AuthUser";
-
-
+import {Link, useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../store";
+import APP_ENV from "../env";
+import {logout} from "../services/authSlice.ts";
 
 export default function Header() {
-    const [user, setUser] = useState<AuthUser | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const result = await api.get("/entity/me");
-                setUser(result.data);
-                setIsAuthenticated(true);
-            } catch (err) {
-                setIsAuthenticated(false);
-                setUser(null);
-                console.log(err);
-            }
-        };
+    const user =
+        useAppSelector(redux => redux.auth.user);
+    const isAdmin = useAppSelector(redux => redux.auth.isAdmin);
+    // console.log("User auth", user);
+    // console.log("is admin", isAdmin);
 
-        loadUser();
-    }, []);
+
+    const appDispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     return (
         <header className="p-4 bg-blue-600 text-white">
-            <nav className="flex justify-between gap-4">
-                <div className={"flex justify-start gap-4"}>
+            <nav className="flex gap-4 justify-between">
+                <div className="flex items-center center gap-4 text-xl">
                     <Link to="/" className="hover:underline">Home</Link>
-                    <Link to="/createCountry" className="hover:underline">Create country</Link>
-                    <Link to="/createCity" className="hover:underline">Create city</Link>
                     <Link to="/about" className="hover:underline">About</Link>
                 </div>
-                {
-                    isAuthenticated  ? (<div>
-                        <Link to="/user/Profile" className="hover:underline flex items-center h-full">
-                            <div className="flex items-center justify-end gap-4">
+                <div>
+                    {
+                        user!=null  ? (<div className={"flex justify-center items-center gap-4"}>
+                                {
+                                    isAdmin &&
+                                    <Link to={"/admin"} className="hover:underline flex items-center h-full text-xl ">
+                                        Admin Menu
+                                    </Link>
+                                }
 
-                                <img src={`${ENV.API_BASE_URL}/images/${user ? user.image : "default.png"}`} alt="logo"
-                                     className={"rounded-full w-8 h-8"}/>
+                                <Link to="/user/Profile" className="hover:underline flex items-center h-full">
+                                    <div className="flex items-center justify-end gap-4">
 
-                                <h1 className={"text-xl"}>{`${user ? user.lastName : ""} ${user ? user.firstName : ""}`}</h1>
+                                        <img src={`${APP_ENV.API_BASE_URL}/images/${user ? user.image : "default.png"}`} alt="logo"
+                                             className={"rounded-full w-8 h-8"}/>
+
+                                        <h1 className={"text-xl"}>{`${user?.firstName} ${user.lastName}`}</h1>
+                                    </div>
+                                </Link>
+                                <button onClick={()=> {appDispatch(logout());navigate('/')}} className="hover:underline cursor-pointer px-4 py-2 bg-red-600 rounded rounded-xl hover:bg-red-700">Log out</button>
+
+                            </div>)
+                            :
+                            <div className={"flex justify-start gap-4"}>
+                                <Link to="/user/register" className="hover:underline">Register</Link>
+                                <Link to="/user/login" className="hover:underline">Log in</Link>
                             </div>
-                        </Link>
 
-                    </div>)
-                        :
-                        <div className={"flex justify-start gap-4"}>
-                            <Link to="/user/register" className="hover:underline">Register</Link>
-                            <Link to="/user/login" className="hover:underline">Log in</Link>
-                        </div>
-
-                }
+                    }
+                </div>
 
             </nav>
         </header>

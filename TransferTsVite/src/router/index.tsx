@@ -9,6 +9,8 @@ import Landing from "../pages/Landing";
 import Register from "../pages/Users/Register";
 import LogIn from "../pages/Users/LogIn";
 import Profile from "../pages/Users/Profile";
+import Admin from "../pages/Admin/Admin.tsx";
+import AdminRoute from "../pages/Admin/AdminRoute.tsx";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -22,7 +24,13 @@ export const router = createBrowserRouter([
             {path: "landing", element: <Landing/>},
             {path: "user/register", element: <Register/>},
             {path: "user/LogIn", element: <LogIn/>},
-            {path: "user/Profile", element: <Profile/>}
+            {path: "user/Profile", element: <Profile/>},
+            {
+                element: <AdminRoute />,
+                children: [
+                    { path: "admin", element: <Admin /> }
+                ]
+            },
         ],
     },
 ]);

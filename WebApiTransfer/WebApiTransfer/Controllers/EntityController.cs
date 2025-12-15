@@ -105,6 +105,7 @@ public class EntityController(UserManager<UserEntity> manager,
         {
             await roleManager.CreateAsync(new RoleEntity { Name = "User" });
         }
+        await manager.AddToRoleAsync(entity, "User");
 
         var token = await jwtTokenService.CreateToken(entity);
         
@@ -141,5 +142,21 @@ public class EntityController(UserManager<UserEntity> manager,
             roles = user.UserRoles.Select(x => x.Role.Name)
         });
     }
+    
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public IActionResult GetAdminData()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId == null)
+            return Unauthorized();
+
+        return Ok();
+    }
+
+    
+    
+    
 
 }

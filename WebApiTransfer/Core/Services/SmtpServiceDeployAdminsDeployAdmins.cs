@@ -1,11 +1,18 @@
 using System.Net;
 using System.Net.Mail;
 using Core.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Services;
 
 public class SmtpServiceDeployAdminsDeployAdmins : ISmtpServiceDeployAdmins
 {
+    private readonly IConfiguration _config;
+    
+    public SmtpServiceDeployAdminsDeployAdmins(IConfiguration config)
+    {
+        _config = config;
+    }
     public bool SendEmail(List<UserEntity> admins)
     {
         foreach (var admin in admins)
@@ -14,7 +21,7 @@ public class SmtpServiceDeployAdminsDeployAdmins : ISmtpServiceDeployAdmins
             var name = admin.FirstName + " " + admin.LastName;
             var fromAddress = new MailAddress("mywork123213@gmail.com", "Transportation website");
             var toAddress = new MailAddress(email, "Dear " + name);
-            const string fromPassword = "hptz tnqd nyzq ymal";
+            var fromPassword = _config["SmtpToken"];
             const string subject = "Verification code";
             string body = $"Hello dear, {name}, we are happy to announce that the website was successfully started!";
 

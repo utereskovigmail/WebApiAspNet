@@ -20,7 +20,7 @@ using WebApiTransfer.ProgramTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IImageService imageService = new ImageService(builder.Configuration);
+
 
 
 string st = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -144,7 +144,7 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
                 "http://localhost:5173",
-                "https://passangertrans.netlify.app"
+                "http://transportationfrontend.somee.com"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
@@ -163,18 +163,21 @@ app.UseCors("AllowTwoDomains");
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbTransferContext>();
+    var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
     db.Database.Migrate();
 
     if (!db.Countries.Any())
     {
-        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Countries/CountrySeeding.json");
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding", "Countries","CountrySeeding.json");
+        // var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Countries/CountrySeeding.json");
         var json = File.ReadAllText(jsonPath);
 
         var items = JsonSerializer.Deserialize<List<CountryEntity>>(json);
 
         foreach (var item in items)
         {
-            var fileName = await imageService.UploadLocalImageAsync($"Seeding/Countries/Images/{item.Image}");
+            var fileName = await imageService.UploadLocalImageAsync(Path.Combine("Seeding","Countries","Images", item.Image));
+            // var fileName = await imageService.UploadLocalImageAsync($"Seeding/Countries/Images/{item.Image}");
             item.Image = fileName;
         }
 
@@ -184,14 +187,15 @@ using (var scope = app.Services.CreateScope())
 
     if (!db.Cities.Any())
     {
-        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Cities/CitySeeding.json");
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding", "Cities", "CitySeeding.json");
+        // var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Cities/CitySeeding.json");
         var json = File.ReadAllText(jsonPath);
 
         var items = JsonSerializer.Deserialize<List<CityEntity>>(json);
 
         foreach (var item in items)
         {
-            var fileName = await imageService.UploadLocalImageAsync($"Seeding/Cities/Images/{item.Image}");
+            var fileName = await imageService.UploadLocalImageAsync(Path.Combine("Seeding","Cities","Images", item.Image));
             item.Image = fileName;
         }
 
@@ -233,7 +237,8 @@ using (var scope = app.Services.CreateScope())
 
     if (!db.TransportationStatuses.Any())
     {
-        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/TransportationStatus/TransportationStatuses.json");
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding", "TransportationStatus", "TransportationStatuses.json");
+        // var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/TransportationStatus/TransportationStatuses.json");
         var json = File.ReadAllText(jsonPath);
         var items = JsonSerializer.Deserialize<List<TransportationStatusEntity>>(json);
         db.TransportationStatuses.AddRange(items);
@@ -242,7 +247,8 @@ using (var scope = app.Services.CreateScope())
 
     if (!db.Transportations.Any())
     {
-        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Transporation/Transportations.json");
+        var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding", "Transporation", "Transportations.json");
+        // var jsonPath = Path.Combine(app.Environment.ContentRootPath, "Seeding/Transporation/Transportations.json");
         var json = File.ReadAllText(jsonPath);
         var items = JsonSerializer.Deserialize<List<TransportationEntity>>(json);
         db.Transportations.AddRange(items);
