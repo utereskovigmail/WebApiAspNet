@@ -61,21 +61,42 @@ const Home = () =>{
     }
 
 
-    if(error) return <p className={"text-4xl text-center text-red-800"}>Error loading Users</p>
-    if(isLoading) return <p className={"text-4xl text-center text-blue-500"}>Loading...</p>
-    if(data === null) return <p className={"text-4xl text-center text-red-800"}>No users found</p>
+    if (error)
+        return (
+            <p className="text-4xl text-center text-red-700 dark:text-red-400">
+                Error loading Users
+            </p>
+        );
+
+    if (isLoading)
+        return (
+            <div className={"h-screen w-full dark:bg-gray-800"}>
+                <p className="text-4xl text-center text-blue-600 dark:text-blue-400">
+                    Loading...
+                </p>
+            </div>
+
+        );
+
+    if(data === null) return <p className="text-4xl text-center text-red-700 dark:text-red-400">No users found</p>
 
     return (
-        <div className={"w-full p-4 flex flex-row flex-wrap gap-4 justify-center"}>
+        <div className=" min-h-screen
+                  bg-gray-100 dark:bg-gray-900 transition-colors">
 
-            {!data && <p className={"text-center text-xl my-4"}>No data found</p>}
-            {
-
-
-                data?.map((item, index:number) => (
+            {!data && (
+                <p className="text-center text-xl my-4 text-gray-700 dark:text-gray-300">
+                    No data found
+                </p>
+            )}
+            <div className={"w-full p-4 flex flex-row flex-wrap gap-4 justify-center h-auto"}>
+                {data?.map((item, index: number) => (
                     <div
                         key={index}
-                        className="max-w-sm bg-white rounded-xl shadow-md overflow-hidden border border-gray-200"
+                        className="max-w-sm rounded-xl overflow-hidden border
+                   bg-white dark:bg-white/[0.03]
+                   border-gray-200 dark:border-gray-800
+                   shadow-md dark:shadow-lg h-auto"
                     >
                         <img
                             src={`${APP_ENV.API_BASE_URL}/images/${item.image}`}
@@ -84,77 +105,81 @@ const Home = () =>{
                         />
 
                         <div className="p-6 text-center">
+          <span
+              className="inline-block px-2 py-1 text-xs font-medium rounded-md
+                       bg-blue-100 text-blue-700
+                       dark:bg-blue-900/40 dark:text-blue-300"
+          >
+            {item.slug}
+          </span>
 
-                        <span className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-md">
-                          {item.slug}
-                        </span>
-
-                            <h3 className="mt-4 text-2xl font-semibold text-gray-900">
+                            <h3 className="mt-4 text-2xl font-semibold
+                         text-gray-900 dark:text-gray-100">
                                 {item.name}
                             </h3>
 
-                            <p className="mt-2 text-gray-600 text-sm">
+                            <p className="mt-2 text-sm
+                        text-gray-600 dark:text-gray-400">
                                 {item.description}
                             </p>
+
                             <div className="flex items-center justify-center gap-4">
                                 <button
                                     onClick={() => openModal(item)}
-                                    className={`mt-6 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition ${
-                                        isAdmin ? "" : "w-full mx-4"
-                                    }`}>
+                                    className={`mt-6 inline-flex items-center justify-center px-4 py-2
+                          rounded-md text-sm font-medium transition
+                          bg-blue-600 text-white hover:bg-blue-700
+                          dark:bg-blue-500 dark:hover:bg-blue-600
+                          ${isAdmin ? "" : "w-full mx-4"}`}
+                                >
                                     Read more →
                                 </button>
 
-                                {
-                                    isAdmin &&
-                                    <div className={"flex items-center justify-center gap-4"}>
+                                {isAdmin && (
+                                    <div className="flex items-center justify-center gap-4">
                                         <button
                                             onClick={() => Delete(item.id)}
-                                            className={"mt-6 inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition"}>
+                                            className="mt-6 inline-flex items-center px-4 py-2
+                             rounded-md text-sm font-medium transition
+                             bg-red-600 text-white hover:bg-red-700
+                             dark:bg-red-500 dark:hover:bg-red-600"
+                                        >
                                             Delete
                                         </button>
 
                                         <button
-                                            // onClick={() => Delete(item.id)}
-                                            className={"mt-6 inline-flex items-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition"}>
+                                            className="mt-6 inline-flex items-center px-4 py-2
+                             rounded-md text-sm font-medium transition
+                             bg-yellow-600 text-white hover:bg-yellow-700
+                             dark:bg-yellow-500 dark:hover:bg-yellow-600"
+                                        >
                                             Edit
                                         </button>
                                     </div>
-                                }
-
-
+                                )}
                             </div>
-                            <div className={"px-4"}>
+
+                            <div className="px-4">
                                 <button
                                     onClick={() => navigate(`/cities/${item.id}`)}
-                                    className={`mt-6 inline-flex items-center justify-center px-4 py-2 bg-yellow-600 text-white rounded-md text-sm font-medium hover:bg-yellow-700 transition ${
-                                        isAdmin ? "" : "w-full"
-                                    }`}
+                                    className={`mt-6 inline-flex items-center justify-center px-4 py-2
+                          rounded-md text-sm font-medium transition
+                          bg-yellow-600 text-white hover:bg-yellow-700
+                          dark:bg-yellow-500 dark:hover:bg-yellow-600
+                          ${isAdmin ? "" : "w-full"}`}
                                 >
                                     View Cities
                                 </button>
                             </div>
-
-
-
-
-
-
-
-
-
                         </div>
                     </div>
+                ))}
+            </div>
 
-                ))
-            }
 
-            <Modal
-                isOpen={isOpen}
-                onClose={closeModal}
-                country={selected}
-            />
+            <Modal isOpen={isOpen} onClose={closeModal} country={selected} />
         </div>
-    )
+    );
+
 };
 export default Home;

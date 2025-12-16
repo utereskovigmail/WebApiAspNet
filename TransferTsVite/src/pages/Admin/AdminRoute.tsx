@@ -32,7 +32,7 @@ export default function AdminRoute() {
     }, [user, isAdmin]);
 
     if (!user || !isAdmin) {
-        return <Navigate to="/user/login" replace />;
+        return <Navigate to="*" replace />;
     }
 
     if (authorized === null) {

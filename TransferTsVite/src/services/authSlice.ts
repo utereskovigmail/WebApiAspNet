@@ -4,6 +4,9 @@ import {jwtDecode} from "jwt-decode";
 
 const getUserFromToken = (token: string) : UserTokenInfo | null  => {
     try {
+        if (!token) {
+            return null;
+        }
         const decode = jwtDecode<UserTokenInfo>(token);
         return decode ?? null;
     }

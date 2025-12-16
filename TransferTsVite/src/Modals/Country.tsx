@@ -1,4 +1,3 @@
-
 import type { Country } from "../Interfaces/Countries/Country.ts";
 
 interface ModalProps {
@@ -13,15 +12,23 @@ export default function Country({ isOpen, onClose, country }: ModalProps) {
     const url = "http://localhost:5055";
 
     return (
-        <div className="fixed inset-0 bg-black/40  flex items-center justify-center z-50"
-        onClick={onClose}
+        <div
+            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50
+                 dark:bg-white/[0.03] transition-colors"
+            onClick={onClose}
         >
-            <div className="bg-white rounded-xl shadow-lg max-w-lg w-full p-6 relative">
-
+            <div
+                className="bg-white dark:bg-gray-900 rounded-xl shadow-lg
+                   max-w-lg w-full p-6 relative
+                   border border-gray-200 dark:border-gray-800"
+                onClick={(e) => e.stopPropagation()}
+            >
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
+                    className="absolute top-3 right-3 text-xl
+                     text-gray-500 hover:text-gray-800
+                     dark:text-gray-400 dark:hover:text-gray-200"
                 >
                     ×
                 </button>
@@ -31,29 +38,35 @@ export default function Country({ isOpen, onClose, country }: ModalProps) {
                     alt={country.name}
                     className="w-full h-56 object-cover rounded-lg"
                 />
-                <h2 className="mt-4 text-3xl font-bold text-gray-900 text-center">
+
+                <h2 className="mt-4 text-3xl font-bold text-center
+                       text-gray-900 dark:text-gray-100">
                     {country.name}
                 </h2>
 
-                <p className="text-center text-sm text-gray-500">{country.slug}</p>
-
-                <p className="mt-4 text-gray-700 leading-relaxed">
-                    {country.description}
+                <p className="text-center text-sm
+                      text-gray-500 dark:text-gray-400">
+                    {country.slug}
                 </p>
 
+                <p className="mt-4 leading-relaxed
+                      text-gray-700 dark:text-gray-300">
+                    {country.description}
+                </p>
 
                 {/* Tags */}
                 <div className="mt-4 flex flex-wrap gap-2">
                     {country.tags.map((tag, i) => (
                         <span
                             key={i}
-                            className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md text-xs font-medium"
+                            className="px-2 py-1 rounded-md text-xs font-medium
+                         bg-blue-100 text-blue-700
+                         dark:bg-blue-900/40 dark:text-blue-300"
                         >
               #{tag}
             </span>
                     ))}
                 </div>
-
             </div>
         </div>
     );
