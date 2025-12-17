@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import {Outlet, Route, Routes} from "react-router-dom";
 import {useAppSelector} from "./store";
-import HomePage from "./pages/Home";
+import HomePage from "./pages/Countries/Home.tsx";
 import AboutPage from "./pages/About";
 import LogIn from "./pages/Users/LogIn.tsx";
 import UserProfiles from "./admin/pages/UserProfiles.tsx";
@@ -23,8 +23,10 @@ import NotFound from "./admin/pages/OtherPage/NotFound.tsx";
 import AdminRoute from "./pages/Admin/AdminRoute.tsx";
 import AppLayout from "./admin/layout/AppLayout.tsx";
 import ProfilePage from "./pages/Users/Profile.tsx";
-import CreateCountry from "./pages/CreateCountry.tsx";
-import AllCities from "./pages/AllCities.tsx";
+import CreateCountry from "./pages/Countries/CreateCountry.tsx";
+import AllCities from "./pages/Cities/AllCities.tsx";
+import CreateCity from "./pages/Cities/Create";
+
 
 
 const MainLayout = () => {
@@ -57,6 +59,8 @@ export default function App() {
                 </Route>
                 {/* Dashboard Layout */}
                 <Route path="/admin" element={<AdminRoute />}>
+
+
                     <Route element={<AppLayout />}>
                         <Route index element={<HomeAdmin />} />
 
@@ -80,6 +84,7 @@ export default function App() {
                         <Route path="bar-chart" element={<BarChart />} />
                     </Route>
                     <Route path="countrycreate" element={<CreateCountry />} />
+                    <Route path="city/create" element={<CreateCity />} />
                 </Route>
 
                 {/* Auth Layout */}

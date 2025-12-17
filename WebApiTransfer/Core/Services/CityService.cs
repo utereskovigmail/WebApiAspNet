@@ -19,6 +19,7 @@ public class CityService(AppDbTransferContext appDbContext,
         {
             entity.Image = await imageService.UploadImageAsync(model.Image);
         }
+        // Console.WriteLine("Details: " + entity.Name + " " + entity.Description +" "+ entity.Id + " " + entity.CountryId + " " + entity.Country.Name);
         await appDbContext.Cities.AddAsync(entity);
         await appDbContext.SaveChangesAsync();
         var item = mapper.Map<CityItemModel>(entity);

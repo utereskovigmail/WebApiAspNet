@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Core.Interfaces;
 using Core.Models.Location.City;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +29,8 @@ namespace WebApiTransfer.Controllers
             return Ok(cities);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateAsync([FromForm] CityCreateModel model)
         {
             var item = await cityService.CreateAsync(model);

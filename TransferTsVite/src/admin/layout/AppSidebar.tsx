@@ -31,7 +31,8 @@ const navItems: NavItem[] = [
     subItems:
         [{ name: "Ecommerce", path:"/admin/", pro: false },
             {name: "Countries", path:"/", pro: false },
-            {name: "Create Country", path:"/", pro: false },
+            {name: "Create Country", path:"/admin/countrycreate", pro: false },
+            {name: "Create City", path:"/admin/city/create", pro: false },
 
         ],
   },

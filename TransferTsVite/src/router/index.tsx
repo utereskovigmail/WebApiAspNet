@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import HomePage from "../pages/Home";
+import HomePage from "../pages/Countries/Home.tsx";
 import AboutPage from "../pages/About";
-import CreateCountryPage from "../pages/CreateCountry";
-import CreateCityPage from "../pages/CreateCity";
-import AllCities from "../pages/AllCities";
+import CreateCountryPage from "../pages/Countries/CreateCountry.tsx";
+import CreateCityPage from "../pages/Cities/Create.tsx";
+import AllCities from "../pages/Cities/AllCities.tsx";
 import Landing from "../pages/Landing";
 import Register from "../pages/Users/Register";
 import LogIn from "../pages/Users/LogIn";

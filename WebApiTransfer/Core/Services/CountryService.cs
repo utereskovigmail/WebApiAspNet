@@ -26,6 +26,7 @@ public class CountryService(IMapper mapper,
         {
             entity.Image = await imageService.UploadImageAsync(model.Image);
         }
+       
         await context.Countries.AddAsync(entity);
         await context.SaveChangesAsync();
         var item = mapper.Map<CountryItemModel>(entity);

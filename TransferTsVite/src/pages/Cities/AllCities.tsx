@@ -1,7 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
-import API_BASE_URL from "../env/index";
-import type {CityItemModel} from "../Interfaces/Cities/CityItemModel";
+import API_BASE_URL from "../../env";
+import type {CityItemModel} from "../../Interfaces/Cities/CityItemModel.ts";
 
 import {useNavigate, useParams} from "react-router-dom";
 function AllCities() {
@@ -42,7 +42,7 @@ function AllCities() {
             {/* Header with Create City button */}
             <div className={"flex justify-end px-4"}>
                 <button
-                    onClick={() => navigate("/admin/cities/create")}
+                    onClick={() => navigate("/admin/city/create")}
                     className="
         px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700
         text-white text-lg font-medium

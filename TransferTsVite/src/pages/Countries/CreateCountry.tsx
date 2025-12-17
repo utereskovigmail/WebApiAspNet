@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import type { CountryGeneralModel } from "../Interfaces/Countries/CountryGeneralModel";
-import API_BASE_URL from "../env";
-import Input from "../admin/components/form/input/InputField";
+import type { CountryGeneralModel } from "../../Interfaces/Countries/CountryGeneralModel.ts";
+import API_BASE_URL from "../../env";
+import Input from "../../admin/components/form/input/InputField.tsx";
 
 export default function CreateCountry() {
     const navigate = useNavigate();

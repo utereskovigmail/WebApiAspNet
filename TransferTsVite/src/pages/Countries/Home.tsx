@@ -3,13 +3,13 @@ import {useQuery} from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
 import axios from "axios";
-import type {Country} from "../Interfaces/Countries/Country.ts";
+import type {Country} from "../../Interfaces/Countries/Country.ts";
 import {useState} from "react";
-import Modal from "../Modals/Country"
-import APP_ENV from "../env";
+import Modal from "../../Modals/Country.tsx"
+import APP_ENV from "../../env";
 import {useNavigate} from "react-router-dom";
-import api from "../components/axios/authorized";
-import {useAppSelector} from "../store";
+import api from "../../components/axios/authorized.tsx";
+import {useAppSelector} from "../../store";
 
 const Home = () =>{
     const api_src = APP_ENV.API_BASE_URL + "/api";
