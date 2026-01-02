@@ -14,10 +14,12 @@ namespace WebApiTransfer.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 
-public class EntityController(UserManager<UserEntity> manager,
+public class EntityController(UserManager<UserEntity> manager,     
+    IUserService userService,
     JwtTokenService jwtTokenService,
     IImageService imageService,
-    RoleManager<RoleEntity> roleManager)
+    RoleManager<RoleEntity> roleManager
+    )
     :ControllerBase
 {
     [HttpPost]
@@ -154,6 +156,44 @@ public class EntityController(UserManager<UserEntity> manager,
 
         return Ok();
     }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> GetProfile()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return Ok(userId);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
+    {
+        bool res = await userService.ForgotPasswordAsync(model);
+        if (res)
+            return Ok();
+        else
+            return BadRequest(new
+            {
+                Status = 400,
+                IsValid = false,
+                Errors = new { Email = "no user with such an email" }
+            });
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+    {
+        var user = await manager.FindByEmailAsync(model.Email);
+        if (user == null) return BadRequest("Invalid email");
+
+        var result = await manager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+        if (!result.Succeeded)
+            return BadRequest(string.Join(", ", result.Errors.Select(e => e.Description)));
+
+        return Ok("Password reset successfully");
+    }
+
 
     
     

@@ -28,7 +28,7 @@ function Create() {
         if (image) formData.append("Image", image);
 
         try {
-            await axios.post(`${api}/api/cities`, formData, {
+            await axios.post(`${api}/api/cities/create`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
             navigate(-1);

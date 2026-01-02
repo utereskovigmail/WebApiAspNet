@@ -173,7 +173,7 @@ const LogIn: React.FC = () => {
                                     {/*</span>*/}
                                     {/*                </div>*/}
                                     <Link
-                                        to="/reset-password"
+                                        to="/Forgot-Password"
                                         className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                                     >
                                         Forgot password?

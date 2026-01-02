@@ -73,6 +73,9 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddHostedService<StartupTask>();
 builder.Services.AddScoped<ISmtpServiceDeployAdmins, SmtpServiceDeployAdminsDeployAdmins>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ISmtpService, SmtpService>();
 
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -82,17 +85,17 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 // Identity without JWT
-builder.Services.AddIdentityCore<UserEntity>(options =>
+builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
     {
         options.Password.RequireDigit = false;
-        options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 6;
         options.Password.RequireNonAlphanumeric = false;
     })
-    .AddRoles<RoleEntity>()
-    .AddRoleManager<RoleManager<RoleEntity>>()
     .AddEntityFrameworkStores<AppDbTransferContext>()
-    .AddSignInManager<SignInManager<UserEntity>>();
+    .AddDefaultTokenProviders();
+
 
 // Removed: JwtTokenService
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

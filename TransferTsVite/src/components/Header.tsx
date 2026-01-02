@@ -18,20 +18,24 @@ export default function Header() {
     return (
         <header className="p-4 bg-blue-600 text-white">
             <nav className="flex gap-4 justify-between">
-                {
-                    isAdmin ?
-                    <div className="flex items-center center gap-4 text-xl">
-                        <Link to="/" className="hover:underline">Home</Link>
-                        <Link to="/about" className="hover:underline">About</Link>
-                        <Link to="/admin/countrycreate" className="hover:underline">Create Country</Link>
-                        <Link to="/admin/city/create" className="hover:underline">Create City</Link>
-                    </div>
-                        :
-                    <div className="flex items-center center gap-4 text-xl">
-                        <Link to="/" className="hover:underline">Home</Link>
-                        <Link to="/about" className="hover:underline">About</Link>
-                    </div>
-                }
+                {/*{*/}
+                {/*    isAdmin ?*/}
+                {/*    <div className="flex items-center center gap-4 text-xl">*/}
+                {/*        <Link to="/" className="hover:underline">Home</Link>*/}
+                {/*        <Link to="/about" className="hover:underline">About</Link>*/}
+                {/*        <Link to="/admin/countrycreate" className="hover:underline">Create Country</Link>*/}
+                {/*        <Link to="/admin/city/create" className="hover:underline">Create City</Link>*/}
+                {/*    </div>*/}
+                {/*        :*/}
+                {/*    <div className="flex items-center center gap-4 text-xl">*/}
+                {/*        <Link to="/" className="hover:underline">Home</Link>*/}
+                {/*        <Link to="/about" className="hover:underline">About</Link>*/}
+                {/*    </div>*/}
+                {/*}*/}
+                <div className="flex items-center center gap-4 text-xl">
+                    <Link to="/" className="hover:underline">Home</Link>
+                    <Link to="/about" className="hover:underline">About</Link>
+                </div>
                 <div>
                     {
                         user!=null  ? (<div className={"flex justify-center items-center gap-4"}>

@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
     name: "Dashboard",
     subItems:
         [{ name: "Ecommerce", path:"/admin/", pro: false },
-            {name: "Countries", path:"/", pro: false },
+            {name: "Countries", path:"/admin/admincountries", pro: false },
             {name: "Create Country", path:"/admin/countrycreate", pro: false },
             {name: "Create City", path:"/admin/city/create", pro: false },
 

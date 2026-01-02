@@ -26,6 +26,8 @@ import ProfilePage from "./pages/Users/Profile.tsx";
 import CreateCountry from "./pages/Countries/CreateCountry.tsx";
 import AllCities from "./pages/Cities/AllCities.tsx";
 import CreateCity from "./pages/Cities/Create";
+import ForgotPassword from "./pages/Users/ForgotPassword.tsx";
+import ResetPassword from "./pages/Users/ResetPassword.tsx";
 
 
 
@@ -56,6 +58,8 @@ export default function App() {
                     <Route path="/signup" element={<Register />} />
                     <Route path={"/profile"} element={<ProfilePage />}/>
                     <Route path={"/cities/:id"} element={<AllCities />}/>
+                    <Route path={"/Forgot-Password"} element={<ForgotPassword/>}/>
+                    <Route path="/reset-password" element={<ResetPassword />} />
                 </Route>
                 {/* Dashboard Layout */}
                 <Route path="/admin" element={<AdminRoute />}>
@@ -63,8 +67,6 @@ export default function App() {
 
                     <Route element={<AppLayout />}>
                         <Route index element={<HomeAdmin />} />
-
-
 
                         <Route path="profile" element={<UserProfiles />} />
                         <Route path="calendar" element={<Calendar />} />
@@ -82,9 +84,13 @@ export default function App() {
 
                         <Route path="line-chart" element={<LineChart />} />
                         <Route path="bar-chart" element={<BarChart />} />
+
+                        <Route path="countrycreate" element={<CreateCountry />} />
+                        <Route path="city/create" element={<CreateCity />} />
+
+                        <Route path="admincountries" element={<HomePage />} />
                     </Route>
-                    <Route path="countrycreate" element={<CreateCountry />} />
-                    <Route path="city/create" element={<CreateCity />} />
+
                 </Route>
 
                 {/* Auth Layout */}
