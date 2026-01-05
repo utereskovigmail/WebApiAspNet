@@ -1,5 +1,6 @@
 [
   {
+    "Id": 1,
     "Name": "New York",
     "Slug": "new-york",
     "Image": "new-york.jpg",
@@ -7,6 +8,7 @@
     "CountryId": 1
   },
   {
+    "Id": 2,
     "Name": "Los Angeles",
     "Slug": "los-angeles",
     "Image": "los-angeles.jpg",
@@ -14,6 +16,7 @@
     "CountryId": 1
   },
   {
+    "Id": 3,
     "Name": "Toronto",
     "Slug": "toronto",
     "Image": "toronto.jpg",
@@ -21,6 +24,7 @@
     "CountryId": 2
   },
   {
+    "Id": 4,
     "Name": "Vancouver",
     "Slug": "vancouver",
     "Image": "vancouver.jpg",
@@ -28,6 +32,7 @@
     "CountryId": 2
   },
   {
+    "Id": 5,
     "Name": "London",
     "Slug": "london",
     "Image": "london.jpg",
@@ -35,6 +40,7 @@
     "CountryId": 3
   },
   {
+    "Id": 6,
     "Name": "Manchester",
     "Slug": "manchester",
     "Image": "manchester.jpg",
@@ -42,6 +48,7 @@
     "CountryId": 3
   },
   {
+    "Id": 7,
     "Name": "Berlin",
     "Slug": "berlin",
     "Image": "berlin.jpg",
@@ -49,6 +56,7 @@
     "CountryId": 4
   },
   {
+    "Id": 8,
     "Name": "Munich",
     "Slug": "munich",
     "Image": "munich.jpg",
@@ -56,6 +64,7 @@
     "CountryId": 4
   },
   {
+    "Id": 9,
     "Name": "Paris",
     "Slug": "paris",
     "Image": "paris.jpg",
@@ -63,6 +72,7 @@
     "CountryId": 5
   },
   {
+    "Id": 10,
     "Name": "Lyon",
     "Slug": "lyon",
     "Image": "lyon.jpg",
@@ -70,6 +80,7 @@
     "CountryId": 5
   },
   {
+    "Id": 11,
     "Name": "Kyiv",
     "Slug": "kyiv",
     "Image": "kyiv.jpg",
@@ -77,6 +88,7 @@
     "CountryId": 6
   },
   {
+    "Id": 12,
     "Name": "Lviv",
     "Slug": "lviv",
     "Image": "lviv.jpg",

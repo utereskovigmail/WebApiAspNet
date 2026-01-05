@@ -14,12 +14,11 @@ namespace WebApiTransfer.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
 
-public class EntityController(UserManager<UserEntity> manager,     
-    IUserService userService,
+public class EntityController(UserManager<UserEntity> manager,
     JwtTokenService jwtTokenService,
     IImageService imageService,
-    RoleManager<RoleEntity> roleManager
-    )
+    IUserService userService,
+    RoleManager<RoleEntity> roleManager)
     :ControllerBase
 {
     [HttpPost]
@@ -165,7 +164,7 @@ public class EntityController(UserManager<UserEntity> manager,
         return Ok(userId);
     }
     
-    [HttpPost]
+    [HttpPost][Authorize]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
     {
         bool res = await userService.ForgotPasswordAsync(model);
@@ -185,13 +184,21 @@ public class EntityController(UserManager<UserEntity> manager,
     {
         var user = await manager.FindByEmailAsync(model.Email);
         if (user == null) return BadRequest("Invalid email");
-
+    
         var result = await manager.ResetPasswordAsync(user, model.Token, model.NewPassword);
-
+    
         if (!result.Succeeded)
             return BadRequest(string.Join(", ", result.Errors.Select(e => e.Description)));
-
+    
         return Ok("Password reset successfully");
+    }
+    
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<IActionResult> SearchUsers([FromQuery] UserSearchModel model)
+    {
+        var result = await userService.SearchUsersAsync(model);
+        return Ok(result);
     }
 
 

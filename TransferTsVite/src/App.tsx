@@ -28,6 +28,7 @@ import AllCities from "./pages/Cities/AllCities.tsx";
 import CreateCity from "./pages/Cities/Create";
 import ForgotPassword from "./pages/Users/ForgotPassword.tsx";
 import ResetPassword from "./pages/Users/ResetPassword.tsx";
+import AdminUserSearchPage from "./pages/Admin/AdminUserSearchPage.tsx";
 
 
 
@@ -89,6 +90,8 @@ export default function App() {
                         <Route path="city/create" element={<CreateCity />} />
 
                         <Route path="admincountries" element={<HomePage />} />
+
+                        <Route path={"usersearch"} element={<AdminUserSearchPage/>} />
                     </Route>
 
                 </Route>

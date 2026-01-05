@@ -23,6 +23,7 @@ public class CountriesController(
     }
     
     [HttpPost("create")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateCountry([FromForm] CountryGeneralModel model)
     {
         var item = await countryService.CreateAsync(model);

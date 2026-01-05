@@ -7,6 +7,7 @@ using Core.Models.Location.City;
 using Core.SMTP;
 using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -55,8 +56,45 @@ public class UserService(IAuthService authService,
         return profile!;
     }
 
-    public Task<bool> ResetPasswordAsync(ResetPasswordModel model)
+    public async Task<PagedResult<UserListItemModel>> SearchUsersAsync(UserSearchModel model)
     {
-        throw new NotImplementedException();
+        var page = model.Page < 1 ? 1 : model.Page;
+        var pageSize = model.PageSize is < 1 or > 100 ? 10 : model.PageSize;
+
+        var query = transferContext.Users
+            .AsNoTracking()
+            .OrderBy(u => u.Email)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(model.Query))
+        {
+            var q = model.Query.ToLower();
+            query = query.Where(u =>
+                u.Email!.ToLower().Contains(q) ||
+                (u.FirstName + " " + u.LastName).ToLower().Contains(q));
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.Role))
+        {
+            query = query.Where(u =>
+                u.UserRoles.Any(r => r.Role.Name == model.Role));
+        }
+
+        var total = await query.CountAsync();
+
+        var users = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(u => new UserListItemModel
+            {
+                Id = u.Id.ToString(),
+                Email = u.Email!,
+                FullName = u.FirstName + " " + u.LastName,
+                Roles = u.UserRoles.Select(r => r.Role.Name).ToList()
+            })
+            .ToListAsync();
+
+        return new PagedResult<UserListItemModel>(users, total);
+
     }
 }
