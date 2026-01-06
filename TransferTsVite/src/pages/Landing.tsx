@@ -5,7 +5,7 @@ function handleGoogleLoginResponse(response:CredentialResponse) {
     const idToken = response.credential;
 
     axios.post(
-        APP_ENV.API_BASE_URL + "/google-login", {
+        APP_ENV.API_BASE_URL + "/api/Entity/GoogleLogin", {
         idToken: idToken
     })
         .then(res => {

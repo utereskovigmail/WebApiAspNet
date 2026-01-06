@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+//@ts-ignore React, { useState } from "react";
 import axios from "axios";
 import ENV from "../../env/index";
 import {useNavigate} from "react-router-dom";
@@ -13,6 +13,7 @@ import {ChevronLeftIcon, EyeCloseIcon, EyeIcon} from "../../admin/icons";
 import Label from "../../admin/components/form/Label.tsx";
 import Input from "../../admin/components/form/input/InputField.tsx";
 import Button from "../../admin/components/ui/button/Button.tsx";
+import {useState} from "react";
 
 const LogIn: React.FC = () => {
     const [email, setEmail] = useState<string>("");

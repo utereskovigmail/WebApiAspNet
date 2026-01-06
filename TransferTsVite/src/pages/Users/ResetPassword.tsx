@@ -44,8 +44,8 @@ export default function ResetPassword() {
             }).then(res => {
                 console.log(res);
                 alert("Password reset successfully");
-        }).catch(err => {
-            alert("something went wrong");
+        }).catch( ()=>{
+                alert("Something went wrong");
         })
         navigate('/signin');
     }

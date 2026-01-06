@@ -64,7 +64,7 @@ function Create() {
                         value={name}
                         onChange={e => setName(e.target.value)}
                         placeholder="Kyiv"
-                        required
+
                     />
                 </Field>
 
@@ -74,7 +74,7 @@ function Create() {
                         value={slug}
                         onChange={e => setSlug(e.target.value)}
                         placeholder="kyiv"
-                        required
+
                         className="input"
                     />
                     <p className="hint dark:text-gray-600">
@@ -150,7 +150,7 @@ function Create() {
                 <Field label="Image">
                     <Input
                         type="file"
-                        accept="image/*"
+                        // accept="image/*"
                         onChange={(e) =>
                             e.target.files && setImage(e.target.files[0])
                         }

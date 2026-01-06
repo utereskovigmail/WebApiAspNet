@@ -5,6 +5,12 @@ import Input from "../../admin/components/form/input/InputField.tsx";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../admin/icons";
 import axios from "axios";
 import ENV from "../../env";
+import {useAppDispatch} from "../../store";
+import {loginSuccess} from "../../services/authSlice.ts";
+import { useGoogleLogin} from "@react-oauth/google";
+import APP_ENV from "../../env";
+import GoogleLoginButton from "../../components/Google/GoogleLoginButton.tsx";
+import type {LoginSuccess} from "../../Interfaces/User/LoginSuccess.ts";
 
 function Register() {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +20,7 @@ function Register() {
     const [password, setPassword] = useState<string>("");
     const [photo, setPhoto] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
-
+    const appDispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +52,7 @@ function Register() {
             );
 
             localStorage.setItem("token", res.data.token);
+            appDispatch(loginSuccess(res.data.token));
             alert("Registration successful!");
         } catch (err) {
             console.error("Error:", err);
@@ -54,6 +61,43 @@ function Register() {
 
         navigate("/");
     };
+
+
+    // function handleGoogleLoginResponse(response:CredentialResponse) {
+    //     const idToken = response.credential;
+    //
+    //     axios.post(
+    //         APP_ENV.API_BASE_URL + "/api/Entity/GoogleLogin", {
+    //             idToken: idToken
+    //         })
+    //         .then(res => {
+    //             console.log("Server token:", res.data.token);
+    //             localStorage.setItem("token", res.data.token);
+    //         })
+    //         .catch(err => {
+    //             console.error("Login failed", err);
+    //         });
+    // }
+
+    const loginUseGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) =>
+        {
+            console.log("tokenResponse", tokenResponse.access_token);
+            try {
+                const response =
+                    await axios.post<LoginSuccess>(APP_ENV.API_BASE_URL + "/api/Entity/GoogleLogin", {
+                        idToken: tokenResponse.access_token
+                    });
+                // dispatch(loginSuccess(result.token));
+                const { token } = response.data;
+                appDispatch(loginSuccess(token));
+                navigate("/");
+                console.log("Google користувач:", response.data);
+            } catch (error) {
+                console.error("Google логін не вдалий:", error);
+            }
+        },
+    });
 
     return (
         <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-2/3 no-scrollbar mx-auto">
@@ -67,6 +111,7 @@ function Register() {
                 </Link>
             </div>
 
+
             <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
                 <div>
                     <div className="mb-5 sm:mb-8">
@@ -76,27 +121,20 @@ function Register() {
                         <p className="text-sm text-gray-500 dark:text-gray-400">
                             Enter your email and password to sign up!
                         </p>
+                        <p className={"text-gray-500 dark:text-gray-400"}><b>OR</b></p>
+                        <div>
+                            <GoogleLoginButton
+                                onClick={() => {
+                                    loginUseGoogle();
+                                }}
+                            />
+
+                            {/*<GoogleLogin onSuccess={credentialResponse => handleGoogleLoginResponse(credentialResponse) } onError={()=> console.log("error")}/>*/}
+                        </div>
                     </div>
 
-                    {/*<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 mb-6">*/}
-                    {/*    <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">*/}
-                    {/*        Sign up with Google*/}
-                    {/*    </button>*/}
-                    {/*    <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">*/}
-                    {/*        Sign up with X*/}
-                    {/*    </button>*/}
-                    {/*</div>*/}
 
-                    {/*<div className="relative py-3 sm:py-5">*/}
-                    {/*    <div className="absolute inset-0 flex items-center">*/}
-                    {/*        <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="relative flex justify-center text-sm">*/}
-                    {/*          <span className="p-2 text-gray-400 bg-white dark:bg-gray-900 sm:px-5 sm:py-2">*/}
-                    {/*            Or*/}
-                    {/*          </span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+
 
                     <form onSubmit={handleSubmit}>
                         <div className="space-y-5">

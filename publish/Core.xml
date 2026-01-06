@@ -4,6 +4,16 @@
         <name>Core</name>
     </assembly>
     <members>
+        <member name="M:Core.Interfaces.ISmtpService.SendEmails(System.Collections.Generic.List{Core.SMTP.EmailMessage})">
+            <summary>
+            Send multiple emails
+            </summary>
+        </member>
+        <member name="M:Core.Interfaces.ISmtpService.SendEmail(Core.SMTP.EmailMessage)">
+            <summary>
+            Send a single email
+            </summary>
+        </member>
         <member name="P:Core.Models.Identity.LoginModel.Email">
             <summary>
             Emain
@@ -15,6 +25,21 @@
             Password
             </summary>
             <example>Admin123</example>
+        </member>
+        <member name="P:Core.SMTP.EmailMessage.Subject">
+            <summary>
+            Тема листа
+            </summary>
+        </member>
+        <member name="P:Core.SMTP.EmailMessage.Body">
+            <summary>
+            Вміст листа
+            </summary>
+        </member>
+        <member name="P:Core.SMTP.EmailMessage.To">
+            <summary>
+            Кому на пошту піде лист
+            </summary>
         </member>
     </members>
 </doc>

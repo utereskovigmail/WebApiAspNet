@@ -13,6 +13,7 @@ import {ThemeProvider} from "./admin/context/ThemeContext.tsx";
 import {AppWrapper} from "./admin/components/common/PageMeta.tsx";
 import App from "./App.tsx";
 import {BrowserRouter} from "react-router-dom";
+import {GoogleOAuthProvider} from "@react-oauth/google";
 
 const queryClient = new QueryClient();
 const store = setupStore();
@@ -22,12 +23,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
             <ThemeProvider>
                 <AppWrapper>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <App/>
-                            {/*<RouterProvider router={router}/>*/}
-                        </QueryClientProvider>
-                    </Provider>
+                    <GoogleOAuthProvider clientId={"171665714128-003fuh22ebg5q2mlp1hgfgod31rndo6p.apps.googleusercontent.com"}>
+                        <Provider store={store}>
+                            <QueryClientProvider client={queryClient}>
+                                <App/>
+                                {/*<RouterProvider router={router}/>*/}
+                            </QueryClientProvider>
+                        </Provider>
+                    </GoogleOAuthProvider>
                 </AppWrapper>
             </ThemeProvider>
         </BrowserRouter>

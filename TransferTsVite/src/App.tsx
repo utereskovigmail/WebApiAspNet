@@ -29,6 +29,8 @@ import CreateCity from "./pages/Cities/Create";
 import ForgotPassword from "./pages/Users/ForgotPassword.tsx";
 import ResetPassword from "./pages/Users/ResetPassword.tsx";
 import AdminUserSearchPage from "./pages/Admin/AdminUserSearchPage.tsx";
+import Landing from "./pages/Landing.tsx";
+import GoogleCallback from "./pages/Users/Google/GoogleCallback.tsx";
 
 
 
@@ -61,6 +63,8 @@ export default function App() {
                     <Route path={"/cities/:id"} element={<AllCities />}/>
                     <Route path={"/Forgot-Password"} element={<ForgotPassword/>}/>
                     <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/google" element={<Landing/>} />
+                    <Route path={"/google-callback"} element={<GoogleCallback/>} />
                 </Route>
                 {/* Dashboard Layout */}
                 <Route path="/admin" element={<AdminRoute />}>

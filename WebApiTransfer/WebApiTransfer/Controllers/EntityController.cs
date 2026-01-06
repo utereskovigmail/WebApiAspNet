@@ -4,6 +4,9 @@ using Core.Mappers;
 using Core.Models.Identity;
 using Core.Services;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,49 +21,29 @@ public class EntityController(UserManager<UserEntity> manager,
     JwtTokenService jwtTokenService,
     IImageService imageService,
     IUserService userService,
+    IConfiguration configuration,
     RoleManager<RoleEntity> roleManager)
     :ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginDto dto)
+    public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequestModel model)
     {
-        GoogleJsonWebSignature.Payload payload;
-
-        try
+        var result = await userService.LoginByGoogle(model.IdToken);
+        if (string.IsNullOrEmpty(result))
         {
-            payload = await GoogleJsonWebSignature.ValidateAsync(dto.idToken);
-        }
-        catch (Exception ex)
-        {
-            return Unauthorized("Invalid Google token");
-        }
-
-        // payload.Email
-        // payload.GivenName
-        // payload.FamilyName
-        // payload.Picture
-        // payload.Subject (унікальний Google ID)
-
-        var user = await manager.FindByEmailAsync(payload.Email);
-
-        if (user == null)
-        {
-            user = new UserEntity
+            return BadRequest(new
             {
-                Email = payload.Email,
-                UserName = payload.Email,
-                FirstName = payload.GivenName,
-                LastName = payload.FamilyName,
-                Image = payload.Picture
-            };
-
-            await manager.CreateAsync(user);
+                Status = 400,
+                IsValid = false,
+                Errors = new { Email = "Помилка реєстрації" }
+            });
         }
-
-        var jwt = await jwtTokenService.CreateToken(user);
-
-        return Ok(new { token = jwt });
+        return Ok(new
+        {
+            Token = result
+        });
     }
+    
 
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
