@@ -49,5 +49,11 @@ public class AppDbTransferContext : IdentityDbContext<UserEntity, RoleEntity, in
             .HasMany(c => c.Arrivals)
             .WithOne(t => t.ToCity)
             .HasForeignKey(t => t.ToCityId);
+        
+        builder.Entity<CityEntity>(entity =>
+        {
+            entity.Property(e => e.Id)
+                .UseIdentityColumn();
+        });
     }
 }

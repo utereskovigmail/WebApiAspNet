@@ -15,6 +15,8 @@ public class CityMapper : Profile
      
 
         CreateMap<CityCreateModel, CityEntity>()
-            .ForMember(x=>x.Image, opt=>opt.Ignore());
+            .ForMember(x=>x.Image, opt=>opt.Ignore()
+            )
+            .ForMember(x=>x.Id, opt=>opt.Ignore());
     }
 }
