@@ -18,12 +18,9 @@ public class AppDbTransferContext : IdentityDbContext<UserEntity, RoleEntity, in
 
     public DbSet<CountryEntity> Countries { get; set; }
     public DbSet<CityEntity> Cities { get; set; }
-    
-    
-    
     public DbSet<TransportationStatusEntity> TransportationStatuses { get; set; }
-    
     public DbSet<TransportationEntity> Transportations { get; set; }
+    public DbSet<CartEntity> Carts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

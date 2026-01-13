@@ -2,6 +2,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../store";
 import APP_ENV from "../env";
 import {logout} from "../services/authSlice.ts";
+import CartComponent from "./Cart/CartComponent.tsx";
+
 
 export default function Header() {
 
@@ -18,23 +20,10 @@ export default function Header() {
     return (
         <header className="p-4 bg-blue-600 text-white">
             <nav className="flex gap-4 justify-between">
-                {/*{*/}
-                {/*    isAdmin ?*/}
-                {/*    <div className="flex items-center center gap-4 text-xl">*/}
-                {/*        <Link to="/" className="hover:underline">Home</Link>*/}
-                {/*        <Link to="/about" className="hover:underline">About</Link>*/}
-                {/*        <Link to="/admin/countrycreate" className="hover:underline">Create Country</Link>*/}
-                {/*        <Link to="/admin/city/create" className="hover:underline">Create City</Link>*/}
-                {/*    </div>*/}
-                {/*        :*/}
-                {/*    <div className="flex items-center center gap-4 text-xl">*/}
-                {/*        <Link to="/" className="hover:underline">Home</Link>*/}
-                {/*        <Link to="/about" className="hover:underline">About</Link>*/}
-                {/*    </div>*/}
-                {/*}*/}
                 <div className="flex items-center center gap-4 text-xl">
                     <Link to="/" className="hover:underline">Home</Link>
-                    <Link to="/about" className="hover:underline">About</Link>
+                    {/*<Link to="/about" className="hover:underline">About</Link>*/}
+                    <Link to="/transportations" className="hover:underline">Transportations</Link>
                 </div>
                 <div>
                     {
@@ -45,6 +34,7 @@ export default function Header() {
                                         Admin Menu
                                     </Link>
                                 }
+                                <CartComponent />
 
                                 <Link to="/Profile" className="hover:underline flex items-center h-full">
                                     <div className="flex items-center justify-end gap-4">

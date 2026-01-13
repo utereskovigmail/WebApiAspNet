@@ -66,18 +66,17 @@ builder.Services.AddSwaggerGen(opt =>
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddHostedService<StartupTask>();
 builder.Services.AddScoped<ISmtpServiceDeployAdmins, SmtpServiceDeployAdminsDeployAdmins>();
-
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
-
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ITransportationService, TransportationService>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {

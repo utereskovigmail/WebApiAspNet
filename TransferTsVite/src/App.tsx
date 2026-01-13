@@ -31,6 +31,7 @@ import ResetPassword from "./pages/Users/ResetPassword.tsx";
 import AdminUserSearchPage from "./pages/Admin/AdminUserSearchPage.tsx";
 import Landing from "./pages/Landing.tsx";
 import GoogleCallback from "./pages/Users/Google/GoogleCallback.tsx";
+import TransportationList from "./pages/Transportations/TransportationList.tsx";
 
 
 
@@ -65,6 +66,7 @@ export default function App() {
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/google" element={<Landing/>} />
                     <Route path={"/google-callback"} element={<GoogleCallback/>} />
+                    <Route path={"transportations"} element={<TransportationList/>} />
                 </Route>
                 {/* Dashboard Layout */}
                 <Route path="/admin" element={<AdminRoute />}>
@@ -96,6 +98,8 @@ export default function App() {
                         <Route path="admincountries" element={<HomePage />} />
 
                         <Route path={"usersearch"} element={<AdminUserSearchPage/>} />
+
+
                     </Route>
 
                 </Route>

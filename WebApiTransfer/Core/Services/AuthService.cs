@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,12 +11,14 @@ public class AuthService(IHttpContextAccessor httpContextAccessor,
 {
     public async Task<int> GetUserIdAsync()
     {
-        var email = httpContextAccessor.HttpContext?.User.Claims.First().Value;
-        if(string.IsNullOrEmpty(email))
-        {
+        var httpContext = httpContextAccessor.HttpContext
+                          ?? throw new UnauthorizedAccessException("No HttpContext.");
+
+        var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim == null)
             throw new UnauthorizedAccessException("User is not authenticated.");
-        }
-        var user = await userManager.FindByEmailAsync(email);
-        return user!.Id;
+
+        return int.Parse(userIdClaim.Value);
     }
 }
