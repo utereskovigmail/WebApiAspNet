@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  api:
+    image: utereskovi/tranfer-api
+    container_name: tranfer-api_container
+    ports:
+      - "5898:8080"      # Maps host:container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - db
+
+  frontend:
+    build: ./TransferTsVite
+    container_name: react_frontend
+    ports:
+      - "4321:80"       # React app available at 192.168.64.4:4321
+    depends_on:
+      - api
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
