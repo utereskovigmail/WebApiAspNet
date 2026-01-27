@@ -24,7 +24,7 @@ services:
 
   front:
     build: 
-      context: ./my-transfer-ts
+      context: ./TransferTsVite
     container_name: react_front
     depends_on:
       - server
