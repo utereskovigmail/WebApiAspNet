@@ -33,7 +33,6 @@ App_Data/
 secrets.json
 
 # Environment variables
-*.env
 *.env.local
 
 # Resharper
