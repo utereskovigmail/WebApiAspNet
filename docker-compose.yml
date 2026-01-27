@@ -1,9 +1,13 @@
 version: "3.9"
 
+networks:
+  transfer_net:
+    driver: bridge
+
 services:
   db:
     image: postgres:18.1
-    container_name: db
+    container_name: postgres_db
     restart: always
     ports:
       - "5022:5432"
@@ -13,22 +17,31 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - /data/transfer/postgres:/var/lib/postgresql
-
+    networks:
+      - transfer_net
+    
   server:
     build: ./WebApiTransfer
     container_name: transfer_api
     volumes:
       - /data/transfer/images:/app/images
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=192.168.64.5;Database=mydb;Port=5022;Username=ivan;Password=marko123halosh
     ports:
       - "5898:8080"
     depends_on:
       - db
+    networks:
+      - transfer_net
 
   front:
     build: 
-      context: ./my-transfer-ts
+      context: ./TransferTsVite
     container_name: react_front
     depends_on:
       - server
     ports:
       - "3987:80"
+    networks:
+      - transfer_net
