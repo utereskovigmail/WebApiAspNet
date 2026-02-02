@@ -1,4 +1,5 @@
 import type { Country } from "../Interfaces/Countries/Country.ts";
+import APP_ENV from "../env";
 
 interface ModalProps {
     isOpen: boolean;
@@ -9,7 +10,7 @@ interface ModalProps {
 export default function Country({ isOpen, onClose, country }: ModalProps) {
     if (!isOpen || !country) return null;
 
-    const url = "http://localhost:5055";
+    const url = APP_ENV.API_BASE_URL;
 
     return (
         <div

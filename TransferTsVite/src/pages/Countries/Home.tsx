@@ -13,7 +13,6 @@ import {useAppSelector} from "../../store";
 
 const Home = () =>{
     const api_src = APP_ENV.API_BASE_URL + "/api";
-    // const url = "http://localhost:5055";
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [selected, setSelected] = useState<Country | null>(null);

@@ -152,7 +152,8 @@ builder.Services.AddCors(options =>
                 "http://192.168.64.5:4321",
                 "http://192.168.64.7:4321",
                 "http://192.168.64.6:4321",
-                "http://192.168.64.5:3987"
+                "http://192.168.64.5:3987",
+                "http://george.com"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
@@ -241,6 +242,24 @@ using (var scope = app.Services.CreateScope())
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
+        var source = Path.Combine(
+            app.Environment.ContentRootPath,
+            "Seeding",
+            "Admin",
+            "default.jpg"
+        );
+
+        var destDir = Path.Combine(
+            app.Environment.ContentRootPath,
+            "images"
+        );
+        
+        Directory.CreateDirectory(destDir);
+
+        var destFile = Path.Combine(destDir, Path.GetFileName(source));
+
+        File.Copy(source, destFile, true);
+
     }
 
     if (!db.TransportationStatuses.Any())
