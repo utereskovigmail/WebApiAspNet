@@ -5,6 +5,7 @@ import axios from "axios";
 import type { Country } from "../../Interfaces/Countries/Country";
 import { Editor } from "@tinymce/tinymce-react";
 import Input from "../../admin/components/form/input/InputField.tsx";
+import api_axios from "../../components/axios/authorized.tsx";
 
 function Create() {
     const api = API_BASE_URL.API_BASE_URL;
@@ -17,6 +18,26 @@ function Create() {
     const [image, setImage] = useState<File | null>(null);
     const [countries, setCountries] = useState<Country[]>([]);
 
+    // async function handleSubmit(e: FormEvent) {
+    //     e.preventDefault();
+    //
+    //     const formData = new FormData();
+    //     formData.append("Name", name);
+    //     formData.append("Slug", slug);
+    //     formData.append("Description", description);
+    //     formData.append("CountryId", countryId.toString());
+    //     if (image) formData.append("Image", image);
+    //
+    //     try {
+    //         await axios.post(`${api}/api/cities/create`, formData, {
+    //             headers: { "Content-Type": "multipart/form-data" }
+    //         });
+    //         navigate(-1);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
 
@@ -28,11 +49,11 @@ function Create() {
         if (image) formData.append("Image", image);
 
         try {
-            await axios.post(`${api}/api/cities/create`, formData, {
-                headers: { "Content-Type": "multipart/form-data" }
-            });
+            await api_axios.post('/cities/create', formData);
+            alert("Successfully created");
             navigate(-1);
         } catch (error) {
+            alert("Something went wrong! Failed to create the city!")
             console.error(error);
         }
     }

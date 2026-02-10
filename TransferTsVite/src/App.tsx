@@ -99,6 +99,7 @@ export default function App() {
 
                         <Route path={"usersearch"} element={<AdminUserSearchPage/>} />
 
+                        <Route path={"transportations"} element={<TransportationList/>} />
 
                     </Route>
 

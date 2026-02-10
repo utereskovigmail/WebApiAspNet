@@ -1,13 +1,10 @@
 import { useState, type FormEvent } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import type { CountryGeneralModel } from "../../Interfaces/Countries/CountryGeneralModel.ts";
-import API_BASE_URL from "../../env";
 import Input from "../../admin/components/form/input/InputField.tsx";
+import api from "../../components/axios/authorized.tsx";
 
 export default function CreateCountry() {
     const navigate = useNavigate();
-    const api = API_BASE_URL.API_BASE_URL;
 
     const [name, setName] = useState("");
     const [code, setCode] = useState("");
@@ -26,30 +23,26 @@ export default function CreateCountry() {
             .map((t) => t.trim())
             .filter(Boolean);
 
-        const model: CountryGeneralModel = {
-            id: 0,
-            name,
-            code,
-            slug,
-            shortDescription,
-            description,
-            tags,
-            image,
-            imageStr: null
-        };
+        const formData = new FormData();
+
+        formData.append("name", name);
+        formData.append("code", code);
+        formData.append("slug", slug);
+        formData.append("shortDescription", shortDescription);
+        formData.append("description", description);
+
+        formData.append("tags", JSON.stringify(tags));
+
+        if (image) {
+            formData.append("image", image);
+        }
 
         try {
             setIsSubmitting(true);
 
-            const res = await axios.post(
-                `${api}/api/countries/create`,
-                model,
-                {
-                    headers: { "Content-Type": "multipart/form-data" }
-                }
-            );
+            const response = await api.post("/countries/create", formData);
 
-            if (res.status === 200) {
+            if (response.status === 200) {
                 navigate(-1);
             }
         } catch (err) {

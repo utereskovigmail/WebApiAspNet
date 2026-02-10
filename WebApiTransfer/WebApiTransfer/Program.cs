@@ -153,8 +153,23 @@ builder.Services.AddCors(options =>
                 "http://192.168.64.7:4321",
                 "http://192.168.64.6:4321",
                 "http://192.168.64.5:3987",
-                "http://george.com"
+                "http://george.com",
+                "http://transportation.itstep.click"
             )
+            // .SetIsOriginAllowed(origin =>
+            // {    
+            //     return origin.StartsWith("http://transportation.itstep.click");
+            //     
+            // })
+            // .SetIsOriginAllowed(origin =>
+            // {    
+            //     return origin.StartsWith("http://transferapi.itstep.click");
+            //     
+            // })
+            // .SetIsOriginAllowed(origin =>
+            // {    
+            //     return origin.StartsWith("http://18.197.196.99");
+            // })
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
