@@ -2,7 +2,7 @@
 set -e  # зупиняє скрипт при помилці
 
 cd TransferTsVite
-docker build -t transfer-react --platform linux/amd64,linux/arm64 --build-arg VITE_API_BASE_URL=http://transferapi.itstep.click:5898 .
+docker build -t transfer-react --platform linux/amd64,linux/arm64 --build-arg VITE_API_BASE_URL=https://transferapi.itstep.click .
 docker tag transfer-react:latest utereskovi/transfer-react:latest
 docker push utereskovi/transfer-react:latest
 echo "Done ---client---!"
