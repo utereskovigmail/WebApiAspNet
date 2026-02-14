@@ -30,6 +30,7 @@ public class CityService(AppDbTransferContext appDbContext,
     public async Task<List<CityItemModel>> GetListAsync()
     {
         var list  = await appDbContext.Cities
+            .Where(c => c.IsDeleted == false)
             .ProjectTo<CityItemModel>(mapper.ConfigurationProvider)
             .ToListAsync();
         return list;

@@ -24,6 +24,7 @@ namespace WebApiTransfer.Controllers
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var cities = await context.Cities.Where(c => c.Country.Id == id)
+                .Where(c => c.IsDeleted == false)
                 .ProjectTo<CityItemModel>(mapper.ConfigurationProvider)
                     .ToListAsync();
             return Ok(cities);
@@ -36,6 +37,24 @@ namespace WebApiTransfer.Controllers
             var item = await cityService.CreateAsync(model);
             return Ok(item);
         }
+        
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var entity = await context.Cities.FindAsync(id);
+
+            if (entity == null)
+                return NotFound();
+
+            entity.IsDeleted = true;
+
+            await context.SaveChangesAsync();
+            
+            return Ok();
+        }
+        
+       
 
         // [HttpGet("countriesbyid")]
         // public async Task<IActionResult> GetCountriesByIdAsync(int id)

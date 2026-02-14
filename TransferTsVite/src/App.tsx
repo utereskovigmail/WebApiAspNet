@@ -24,7 +24,7 @@ import AdminRoute from "./pages/Admin/AdminRoute.tsx";
 import AppLayout from "./admin/layout/AppLayout.tsx";
 import ProfilePage from "./pages/Users/Profile.tsx";
 import CreateCountry from "./pages/Countries/CreateCountry.tsx";
-import AllCities from "./pages/Cities/AllCities.tsx";
+import CityInCountry from "./pages/Cities/CityInCountry.tsx";
 import CreateCity from "./pages/Cities/Create";
 import ForgotPassword from "./pages/Users/ForgotPassword.tsx";
 import ResetPassword from "./pages/Users/ResetPassword.tsx";
@@ -32,6 +32,7 @@ import AdminUserSearchPage from "./pages/Admin/AdminUserSearchPage.tsx";
 import Landing from "./pages/Landing.tsx";
 import GoogleCallback from "./pages/Users/Google/GoogleCallback.tsx";
 import TransportationList from "./pages/Transportations/TransportationList.tsx";
+import AllCities from "./pages/Cities/AllCities.tsx";
 
 
 
@@ -61,12 +62,13 @@ export default function App() {
                     <Route path="/signin" element={<LogIn />} />
                     <Route path="/signup" element={<Register />} />
                     <Route path={"/profile"} element={<ProfilePage />}/>
-                    <Route path={"/cities/:id"} element={<AllCities />}/>
+                    <Route path={"/cities/:id"} element={<CityInCountry />}/>
                     <Route path={"/Forgot-Password"} element={<ForgotPassword/>}/>
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/google" element={<Landing/>} />
                     <Route path={"/google-callback"} element={<GoogleCallback/>} />
                     <Route path={"transportations"} element={<TransportationList/>} />
+                    <Route path={"cities"} element={<AllCities/>} />
                 </Route>
                 {/* Dashboard Layout */}
                 <Route path="/admin" element={<AdminRoute />}>

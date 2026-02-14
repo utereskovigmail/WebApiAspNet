@@ -3,22 +3,39 @@ import axios from "axios";
 import API_BASE_URL from "../../env";
 import type {CityItemModel} from "../../Interfaces/Cities/CityItemModel.ts";
 import {useAppSelector} from "../../store";
-import {useNavigate} from "react-router-dom";
-
+import {useNavigate, useParams} from "react-router-dom";
 import api from "../../components/axios/authorized.tsx";
+import {useEffect, useState} from "react";
 
 
-function AllCities() {
+function CityInCountry() {
+    const { id } = useParams<{ id: string }>();
     const apiLink = API_BASE_URL.API_BASE_URL;
 
     const isAdmin = useAppSelector(redux => redux.auth.isAdmin);
+
+    const[country, setCountry] = useState<string>("");
+
+    useEffect(() => {
+        const fetchCountry = async () => {
+            try {
+                const response = await axios.get(`${apiLink}/api/Countries/${id}`);
+                console.log(response);
+                setCountry(response.data.name);
+            } catch (error) {
+                console.error("Error fetching country:", error);
+            }
+        };
+
+        fetchCountry();
+    }, [id]);
 
     const queryClient = useQueryClient();
 
     const {data, isLoading, error} = useQuery<CityItemModel[]>({
         queryKey: ["cities"],
         queryFn: async () => {
-            const res = await axios.get(apiLink + "/api/cities");
+            const res = await axios.get(apiLink + "/api/cities/"+id);
             console.log(res.data);
             return res.data;
 
@@ -44,6 +61,7 @@ function AllCities() {
                 No cities found
             </p>
         );
+
 
     async function Delete(id: number) {
         try {
@@ -81,7 +99,7 @@ function AllCities() {
 
             <div className="flex justify-center items-center mb-6 px-4">
                 <h1 className="text-4xl font-semibold text-gray-900 dark:text-gray-100 text-center">
-                    Cities
+                    Cities of {country}
                 </h1>
             </div>
 
@@ -145,10 +163,12 @@ function AllCities() {
                             </div>
                         )}
                     </div>
+
                 ))}
+
             </div>
         </div>
     );
 }
 
-export default AllCities;
+export default CityInCountry;
