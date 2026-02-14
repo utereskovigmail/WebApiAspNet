@@ -48,9 +48,16 @@ const CartComponent: React.FC = () => {
 
     return (
         <>
-            <Button type="primary" onClick={showCart}>
+            <div className="hidden md:block">
+                <Button type="primary" onClick={showCart} >
+                    Cart
+                </Button>
+            </div>
+
+
+            <button onClick={showCart} className={"md:hidden w-full px-4 py-2 bg-emerald-800 rounded-xl hover:bg-emerald-900 mx-4"}>
                 Cart
-            </Button>
+            </button>
 
             <Modal
                 title="Cart"

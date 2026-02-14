@@ -2,11 +2,17 @@ import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 import API_BASE_URL from "../../env";
 import type {CityItemModel} from "../../Interfaces/Cities/CityItemModel.ts";
-
+import {useAppSelector} from "../../store";
 import {useNavigate, useParams} from "react-router-dom";
+
+
 function AllCities() {
     const { id } = useParams<{ id: string }>();
     const api = API_BASE_URL.API_BASE_URL;
+
+    const isAdmin = useAppSelector(redux => redux.auth.isAdmin);
+
+
     const {data, isLoading, error} = useQuery<CityItemModel[]>({
         queryKey: ["cities"],
         queryFn: async () => {
@@ -40,19 +46,23 @@ function AllCities() {
     return (
         <div className="flex flex-col w-full">
             {/* Header with Create City button */}
-            <div className={"flex justify-end px-4"}>
-                <button
-                    onClick={() => navigate("/admin/city/create")}
-                    className="
+            {
+                isAdmin &&
+                <div className={"flex justify-end px-4"}>
+                    <button
+                        onClick={() => navigate("/admin/city/create")}
+                        className="
         px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700
         text-white text-lg font-medium
         transition-colors
         dark:bg-blue-500 dark:hover:bg-blue-600 mt-8
       "
-                >
-                    + Create City
-                </button>
-            </div>
+                    >
+                        + Create City
+                    </button>
+                </div>
+            }
+
             <div className="flex justify-center items-center mb-6 px-4">
                 <h1 className="text-4xl font-semibold text-gray-900 dark:text-gray-100 text-center">
                     Cities

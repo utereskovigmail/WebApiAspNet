@@ -128,12 +128,15 @@ const TransportationsComponent: React.FC = () => {
             }}
         >
             <>
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={data}
-                    pagination={false}
-                />
+                <div className="overflow-x-auto">
+                    <Table
+                        rowKey="id"
+                        columns={columns}
+                        dataSource={data}
+                        pagination={false}
+                        className="min-w-[850px]"
+                    />
+                </div>
 
                 <Modal
                     title="Booking Seats"

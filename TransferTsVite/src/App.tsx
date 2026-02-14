@@ -40,7 +40,7 @@ const MainLayout = () => {
         <div className="min-h-screen bg-gray-100 dark:bg-gray-800">
             <Header />
 
-            <main className="">
+            <main className="p-4">
                 <Outlet />
             </main>
         </div>
